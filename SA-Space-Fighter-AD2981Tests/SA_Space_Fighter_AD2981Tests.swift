@@ -2,7 +2,7 @@
 //  SA_Space_Fighter_AD2981Tests.swift
 //  SA-Space-Fighter-AD2981Tests
 //
-//  Created by Crystal on 2016-05-27.
+//  Created by Todd Cardoso on 2016-05-27.
 //  Copyright © 2016 TJC. All rights reserved.
 //
 

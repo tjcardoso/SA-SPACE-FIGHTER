@@ -16,6 +16,10 @@
 		BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA2F150D1CF8B96800BE254F /* LaunchScreen.storyboard */; };
 		BA2F151A1CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15191CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift */; };
 		BA2F15251CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15241CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift */; };
+		BA2F15341CF8B9B300BE254F /* rainParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15321CF8B9B300BE254F /* rainParticle.sks */; };
+		BA2F15351CF8B9B300BE254F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15331CF8B9B300BE254F /* spark.png */; };
+		BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15361CF8C29E00BE254F /* EndScene.swift */; };
+		BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BA7006E61CF8C84400C0C55F /* bullet.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,20 +41,24 @@
 
 /* Begin PBXFileReference section */
 		BA2F14FD1CF8B96800BE254F /* SA-Space-Fighter-AD2981.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SA-Space-Fighter-AD2981.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA2F15001CF8B96800BE254F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BA2F15001CF8B96800BE254F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BA2F15021CF8B96800BE254F /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		BA2F15041CF8B96800BE254F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		BA2F15061CF8B96800BE254F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		BA2F15041CF8B96800BE254F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GameScene.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		BA2F15061CF8B96800BE254F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = GameViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BA2F15091CF8B96800BE254F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BA2F150B1CF8B96800BE254F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA2F150E1CF8B96800BE254F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BA2F15101CF8B96800BE254F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA2F15151CF8B96800BE254F /* SA-Space-Fighter-AD2981Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SA-Space-Fighter-AD2981Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA2F15191CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SA_Space_Fighter_AD2981Tests.swift; sourceTree = "<group>"; };
+		BA2F15191CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SA_Space_Fighter_AD2981Tests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BA2F151B1CF8B96800BE254F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA2F15201CF8B96800BE254F /* SA-Space-Fighter-AD2981UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SA-Space-Fighter-AD2981UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA2F15241CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SA_Space_Fighter_AD2981UITests.swift; sourceTree = "<group>"; };
+		BA2F15241CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SA_Space_Fighter_AD2981UITests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BA2F15261CF8B96800BE254F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA2F15321CF8B9B300BE254F /* rainParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = rainParticle.sks; path = ../../Galaga1/Galaga1/rainParticle.sks; sourceTree = "<group>"; };
+		BA2F15331CF8B9B300BE254F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../Galaga1/Galaga1/spark.png; sourceTree = "<group>"; };
+		BA2F15361CF8C29E00BE254F /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndScene.swift; path = ../../Galaga1/EndScene.swift; sourceTree = "<group>"; };
+		BA7006E61CF8C84400C0C55F /* bullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = bullet.atlas; path = ../../../../bullet.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +109,14 @@
 		BA2F14FF1CF8B96800BE254F /* SA-Space-Fighter-AD2981 */ = {
 			isa = PBXGroup;
 			children = (
+				BA7006E61CF8C84400C0C55F /* bullet.atlas */,
 				BA2F15001CF8B96800BE254F /* AppDelegate.swift */,
 				BA2F15021CF8B96800BE254F /* GameScene.sks */,
 				BA2F15041CF8B96800BE254F /* GameScene.swift */,
 				BA2F15061CF8B96800BE254F /* GameViewController.swift */,
+				BA2F15361CF8C29E00BE254F /* EndScene.swift */,
+				BA2F15321CF8B9B300BE254F /* rainParticle.sks */,
+				BA2F15331CF8B9B300BE254F /* spark.png */,
 				BA2F15081CF8B96800BE254F /* Main.storyboard */,
 				BA2F150B1CF8B96800BE254F /* Assets.xcassets */,
 				BA2F150D1CF8B96800BE254F /* LaunchScreen.storyboard */,
@@ -199,6 +211,7 @@
 				TargetAttributes = {
 					BA2F14FC1CF8B96800BE254F = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = S66V9VG434;
 					};
 					BA2F15141CF8B96800BE254F = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -235,7 +248,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA2F15341CF8B9B300BE254F /* rainParticle.sks in Resources */,
+				BA2F15351CF8B9B300BE254F /* spark.png in Resources */,
 				BA2F15031CF8B96800BE254F /* GameScene.sks in Resources */,
+				BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */,
 				BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */,
 				BA2F150C1CF8B96800BE254F /* Assets.xcassets in Resources */,
 				BA2F150A1CF8B96800BE254F /* Main.storyboard in Resources */,
@@ -265,6 +281,7 @@
 			files = (
 				BA2F15051CF8B96800BE254F /* GameScene.swift in Sources */,
 				BA2F15071CF8B96800BE254F /* GameViewController.swift in Sources */,
+				BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */,
 				BA2F15011CF8B96800BE254F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,10 +424,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "SA-Space-Fighter-AD2981/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "tjc.SA-Space-Fighter-AD2981";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -418,10 +438,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "SA-Space-Fighter-AD2981/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "tjc.SA-Space-Fighter-AD2981";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -492,6 +515,7 @@
 				BA2F152B1CF8B96800BE254F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BA2F152C1CF8B96800BE254F /* Build configuration list for PBXNativeTarget "SA-Space-Fighter-AD2981Tests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +524,7 @@
 				BA2F152E1CF8B96800BE254F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BA2F152F1CF8B96800BE254F /* Build configuration list for PBXNativeTarget "SA-Space-Fighter-AD2981UITests" */ = {
 			isa = XCConfigurationList;
@@ -508,6 +533,7 @@
 				BA2F15311CF8B96800BE254F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
