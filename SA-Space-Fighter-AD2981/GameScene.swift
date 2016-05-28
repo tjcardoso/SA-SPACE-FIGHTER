@@ -24,10 +24,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var Score           = Int()
     var Player          = SKSpriteNode(imageNamed: "Spaceship")
     var ScoreLbl        = UILabel()
-    let textureAtlas = SKTextureAtlas(named:"bullet.atlas")
-    var bulletArray = Array<SKTexture>();
-    
-    var playerBullet = SKSpriteNode();
+    let textureAtlas    = SKTextureAtlas(named:"bullet.atlas")
+    var bulletArray     = Array<SKTexture>();
+    var playerBullet    = SKSpriteNode();
     
     
     override func didMoveToView(view: SKView) {
@@ -141,11 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Person.removeFromParent()
         self.view?.presentScene(EndScene())
         ScoreLbl.removeFromSuperview()
-        
-        
-        
     }
-    
     
     
     func SpawnBullets(){
@@ -207,13 +202,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //            Player.position.x = location.x
             //            Player.position.y = location.y + 80
             
-            let actionY = SKAction.moveToY(location.y + 80, duration: 0.25)
-            // Or however much time you want to the action to run.
+            let actionY = SKAction.moveToY(location.y + 80, duration: 0.2)
             actionY.timingMode = .EaseInEaseOut
             Player.runAction(actionY)
             
-            let actionX = SKAction.moveToX(location.x, duration: 0.25)
-            // Or however much time you want to the action to run.
+            let actionX = SKAction.moveToX(location.x, duration: 0.2)
             actionX.timingMode = .EaseInEaseOut
             Player.runAction(actionX)
             

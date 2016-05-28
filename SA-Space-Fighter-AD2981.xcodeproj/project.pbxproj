@@ -20,6 +20,10 @@
 		BA2F15351CF8B9B300BE254F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15331CF8B9B300BE254F /* spark.png */; };
 		BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15361CF8C29E00BE254F /* EndScene.swift */; };
 		BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BA7006E61CF8C84400C0C55F /* bullet.atlas */; };
+		BA96965C1CF90C01006006B6 /* endscene-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA96965B1CF90C01006006B6 /* endscene-bg.jpg */; };
+		BA96965E1CF90D50006006B6 /* bg1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA96965D1CF90D50006006B6 /* bg1.jpg */; };
+		BA9696601CF9498C006006B6 /* bluebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = BA96965F1CF9498C006006B6 /* bluebutton.png */; };
+		BA9696621CF954B5006006B6 /* playScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9696611CF954B5006006B6 /* playScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +63,10 @@
 		BA2F15331CF8B9B300BE254F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../Galaga1/Galaga1/spark.png; sourceTree = "<group>"; };
 		BA2F15361CF8C29E00BE254F /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndScene.swift; path = ../../Galaga1/EndScene.swift; sourceTree = "<group>"; };
 		BA7006E61CF8C84400C0C55F /* bullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = bullet.atlas; path = ../../../../bullet.atlas; sourceTree = "<group>"; };
+		BA96965B1CF90C01006006B6 /* endscene-bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "endscene-bg.jpg"; path = "../../../../game backgrounds/endscene-bg.jpg"; sourceTree = "<group>"; };
+		BA96965D1CF90D50006006B6 /* bg1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bg1.jpg; path = "../../../../game backgrounds/bg1.jpg"; sourceTree = "<group>"; };
+		BA96965F1CF9498C006006B6 /* bluebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bluebutton.png; path = ../../../../bluebutton.png; sourceTree = "<group>"; };
+		BA9696611CF954B5006006B6 /* playScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = playScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,10 +121,14 @@
 				BA2F15001CF8B96800BE254F /* AppDelegate.swift */,
 				BA2F15021CF8B96800BE254F /* GameScene.sks */,
 				BA2F15041CF8B96800BE254F /* GameScene.swift */,
+				BA9696611CF954B5006006B6 /* playScene.swift */,
 				BA2F15061CF8B96800BE254F /* GameViewController.swift */,
 				BA2F15361CF8C29E00BE254F /* EndScene.swift */,
 				BA2F15321CF8B9B300BE254F /* rainParticle.sks */,
+				BA96965D1CF90D50006006B6 /* bg1.jpg */,
+				BA96965F1CF9498C006006B6 /* bluebutton.png */,
 				BA2F15331CF8B9B300BE254F /* spark.png */,
+				BA96965B1CF90C01006006B6 /* endscene-bg.jpg */,
 				BA2F15081CF8B96800BE254F /* Main.storyboard */,
 				BA2F150B1CF8B96800BE254F /* Assets.xcassets */,
 				BA2F150D1CF8B96800BE254F /* LaunchScreen.storyboard */,
@@ -249,10 +261,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA2F15341CF8B9B300BE254F /* rainParticle.sks in Resources */,
+				BA96965C1CF90C01006006B6 /* endscene-bg.jpg in Resources */,
 				BA2F15351CF8B9B300BE254F /* spark.png in Resources */,
+				BA9696601CF9498C006006B6 /* bluebutton.png in Resources */,
 				BA2F15031CF8B96800BE254F /* GameScene.sks in Resources */,
 				BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */,
 				BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */,
+				BA96965E1CF90D50006006B6 /* bg1.jpg in Resources */,
 				BA2F150C1CF8B96800BE254F /* Assets.xcassets in Resources */,
 				BA2F150A1CF8B96800BE254F /* Main.storyboard in Resources */,
 			);
@@ -279,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA9696621CF954B5006006B6 /* playScene.swift in Sources */,
 				BA2F15051CF8B96800BE254F /* GameScene.swift in Sources */,
 				BA2F15071CF8B96800BE254F /* GameViewController.swift in Sources */,
 				BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */,
