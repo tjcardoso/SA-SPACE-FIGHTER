@@ -9,6 +9,8 @@
 
 import SpriteKit
 import UIKit
+import AVFoundation
+
 
 struct PhysicsCatagory {
     static let Enemy  : UInt32 = 1 //000000000000000000000000000001
@@ -27,12 +29,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let textureAtlas    = SKTextureAtlas(named:"bullet.atlas")
     var bulletArray     = Array<SKTexture>();
     var playerBullet    = SKSpriteNode();
-    
+    var gameMusic: AVAudioPlayer!
+
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        
+
         let path = NSBundle.mainBundle().pathForResource("rainParticle", ofType: "sks")
         let rainParticle = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as! SKEmitterNode
         
@@ -79,9 +82,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ScoreLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         ScoreLbl.textColor = UIColor.whiteColor()
         self.view?.addSubview(ScoreLbl)
-        
-        
-        
+    
+        func delay(delay: Double, closure: ()->()) {
+            dispatch_after(
+                dispatch_time(
+                    DISPATCH_TIME_NOW,
+                    Int64(delay * Double(NSEC_PER_SEC))
+                ),
+                dispatch_get_main_queue(),
+                closure
+            )
+        }
+        func playGameMusic(){
+            
+            delay(1.0) {
+                do {
+                    self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic", ofType: "caf")!))
+                    self.gameMusic.play()
+                    
+                } catch {
+                    print("Error")
+                }
+            }
+            
+        }
+        playGameMusic()
+    
+    
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -136,6 +163,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
+        }
         Enemy.removeFromParent()
         Person.removeFromParent()
         self.view?.presentScene(EndScene())
