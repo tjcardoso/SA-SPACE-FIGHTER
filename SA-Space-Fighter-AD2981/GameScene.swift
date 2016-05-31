@@ -15,18 +15,12 @@ import AVFoundation
 class GameScene: SKScene {
 
     let playButton = SKSpriteNode(imageNamed: "startButton")
-    let backgroundImage = UIImageView(frame: UIScreen.mainScreen().bounds)
     var endMusic: AVAudioPlayer!
+    var bgImage = SKSpriteNode(imageNamed: "darkbg.jpg")
 
     override func didMoveToView(view: SKView) {
-        backgroundColor = UIColor.blackColor()
-//        backgroundImage.image = UIImage(named: "darkbg.jpg")
-//        self.view?.insertSubview(backgroundImage, atIndex: 0)
-        addPlayButton()
         
         func playEndMusic(){
-            
-            
             do {
                 self.endMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuMusic", ofType: "caf")!))
                 self.endMusic.play()
@@ -34,22 +28,31 @@ class GameScene: SKScene {
             } catch {
                 print("Error")
             }
-            
-            
         }
-        playEndMusic()
-    }
-    
-
-    
-    func addPlayButton(){
         
-        playButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        playButton.xScale = 0.6
-        playButton.yScale = 0.6
-        self.addChild(playButton)
+        func addPlayButton(){
+            playButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            playButton.xScale = 0.6
+            playButton.yScale = 0.6
+            playButton.zPosition = 1.0
+            self.addChild(playButton)
+        }
+
+        func addBackgroundImage(){
+            bgImage.anchorPoint = CGPointMake(0.5, 0.5)
+            bgImage.size.height = self.size.height
+            bgImage.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            bgImage.zPosition = -0.5
+            self.addChild(bgImage)
+        }
+        
+
+        playEndMusic()
+        addBackgroundImage()
+        addPlayButton()
+        
     }
-    
+
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
          /* Called when a touch begins */
@@ -57,10 +60,14 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             
             if self.nodeAtPoint(location) == self.playButton {
+                
+                bgImage.removeFromParent()
+                playButton.removeFromParent()
+                
+                
                 let reveal = SKTransition.crossFadeWithDuration(0.8)
                 let letsPlay = PlayScene(size: self.size)
                 self.view?.presentScene(letsPlay, transition: reveal)
-                playButton.removeFromParent()
                 
             }
         }

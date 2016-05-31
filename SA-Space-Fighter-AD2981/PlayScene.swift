@@ -70,7 +70,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         /* Configure Scene */
         physicsWorld.contactDelegate = self
         self.scene?.backgroundColor = UIColor.blackColor()
-        self.scene?.size = CGSize(width: 640, height: 1136)
+//        self.scene?.size = CGSize(width: 640, height: 1136)
         
         /* Add background particles */
         self.addChild(rainParticle)
@@ -171,7 +171,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         Enemy.removeFromParent()
         Person.removeFromParent()
-        self.view?.presentScene(EndScene())
+        let reveal = SKTransition.crossFadeWithDuration(1.0)
+        let gameOver = EndScene(size: self.size)
+        self.view?.presentScene(gameOver, transition: reveal)
+//        self.view?.presentScene(EndScene())
         ScoreLbl.removeFromSuperview()
     }
     
