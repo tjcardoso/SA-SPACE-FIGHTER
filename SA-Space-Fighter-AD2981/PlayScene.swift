@@ -29,8 +29,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let textureAtlas    = SKTextureAtlas(named:"bullet.atlas")
     var bulletArray     = Array<SKTexture>();
     var playerBullet    = SKSpriteNode();
-    var gameMusic: AVAudioPlayer!
-    let gameStartDelay = SKAction.waitForDuration(3.0)
+    let gameStartDelay  = SKAction.waitForDuration(3.0)
+    var gameMusic       : AVAudioPlayer!
+    
     
     /* Create at delay function */
     func delay(delay: Double, closure: ()->()) {
