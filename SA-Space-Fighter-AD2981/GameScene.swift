@@ -13,18 +13,15 @@ import AVFoundation
 
 
 class GameScene: SKScene {
-    
-    let playButton = SKSpriteNode(imageNamed: "bluebutton")
+
+    let playButton = SKSpriteNode(imageNamed: "startButton")
     let backgroundImage = UIImageView(frame: UIScreen.mainScreen().bounds)
     var endMusic: AVAudioPlayer!
-    
-    
-    
+
     override func didMoveToView(view: SKView) {
-        
         backgroundColor = UIColor.blackColor()
 //        backgroundImage.image = UIImage(named: "darkbg.jpg")
-//        self.view!.insertSubview(backgroundImage, atIndex: 0)
+//        self.view?.insertSubview(backgroundImage, atIndex: 0)
         addPlayButton()
         
         func playEndMusic(){
@@ -48,13 +45,14 @@ class GameScene: SKScene {
     func addPlayButton(){
         
         playButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        playButton.xScale = 0.2
-        playButton.yScale = 0.2
+        playButton.xScale = 0.6
+        playButton.yScale = 0.6
         self.addChild(playButton)
     }
     
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
+         /* Called when a touch begins */
         for touch in (touches ){
             let location = touch.locationInNode(self)
             
@@ -64,13 +62,11 @@ class GameScene: SKScene {
                 self.view?.presentScene(letsPlay, transition: reveal)
                 playButton.removeFromParent()
                 
-
-                
             }
         }
         
     }
-
+}
 
 //
 //
@@ -312,5 +308,5 @@ class GameScene: SKScene {
 //        
 //    }
 //    
-
-}
+//
+//}

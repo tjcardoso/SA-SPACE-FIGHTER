@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA28F0501CFD25A300EC8925 /* PlayScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BA28F04F1CFD25A300EC8925 /* PlayScene.sks */; };
 		BA2E00C11CFA1F6800ADB82E /* endscene-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA2E00C01CFA1F6800ADB82E /* endscene-bg.jpg */; };
 		BA2E00C21CFA255000ADB82E /* gameMusic.caf in Resources */ = {isa = PBXBuildFile; fileRef = BA9696671CFA1E62006006B6 /* gameMusic.caf */; };
 		BA2E00C41CFA25C300ADB82E /* darkbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA2E00C31CFA25C300ADB82E /* darkbg.jpg */; };
@@ -24,8 +25,7 @@
 		BA2F15351CF8B9B300BE254F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15331CF8B9B300BE254F /* spark.png */; };
 		BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15361CF8C29E00BE254F /* EndScene.swift */; };
 		BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BA7006E61CF8C84400C0C55F /* bullet.atlas */; };
-		BA9696601CF9498C006006B6 /* bluebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = BA96965F1CF9498C006006B6 /* bluebutton.png */; };
-		BACCFCBB1CFA5191000ECE8C /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACCFCBA1CFA5191000ECE8C /* PlayScene.swift */; };
+		BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BA28F04F1CFD25A300EC8925 /* PlayScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PlayScene.sks; sourceTree = "<group>"; };
 		BA2E00C01CFA1F6800ADB82E /* endscene-bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "endscene-bg.jpg"; path = "../../../../endscene-bg.jpg"; sourceTree = "<group>"; };
 		BA2E00C31CFA25C300ADB82E /* darkbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = darkbg.jpg; sourceTree = "<group>"; };
 		BA2E00C51CFA270C00ADB82E /* menuMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = menuMusic.caf; sourceTree = "<group>"; };
@@ -68,9 +69,8 @@
 		BA2F15331CF8B9B300BE254F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../Galaga1/Galaga1/spark.png; sourceTree = "<group>"; };
 		BA2F15361CF8C29E00BE254F /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndScene.swift; path = ../../Galaga1/EndScene.swift; sourceTree = "<group>"; };
 		BA7006E61CF8C84400C0C55F /* bullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = bullet.atlas; path = ../../../../bullet.atlas; sourceTree = "<group>"; };
-		BA96965F1CF9498C006006B6 /* bluebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bluebutton.png; path = ../../../../bluebutton.png; sourceTree = "<group>"; };
 		BA9696671CFA1E62006006B6 /* gameMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = gameMusic.caf; path = "../../../../Space-Fighter files/Music/gameMusic.caf"; sourceTree = "<group>"; };
-		BACCFCBA1CFA5191000ECE8C /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
+		BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,13 +124,13 @@
 				BA7006E61CF8C84400C0C55F /* bullet.atlas */,
 				BA2F15001CF8B96800BE254F /* AppDelegate.swift */,
 				BA2F15021CF8B96800BE254F /* GameScene.sks */,
+				BA28F04F1CFD25A300EC8925 /* PlayScene.sks */,
+				BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */,
 				BA2F15041CF8B96800BE254F /* GameScene.swift */,
-				BACCFCBA1CFA5191000ECE8C /* PlayScene.swift */,
 				BA2F15061CF8B96800BE254F /* GameViewController.swift */,
 				BA2F15361CF8C29E00BE254F /* EndScene.swift */,
 				BA2F15321CF8B9B300BE254F /* rainParticle.sks */,
 				BA2E00C51CFA270C00ADB82E /* menuMusic.caf */,
-				BA96965F1CF9498C006006B6 /* bluebutton.png */,
 				BA2E00C31CFA25C300ADB82E /* darkbg.jpg */,
 				BA2E00C01CFA1F6800ADB82E /* endscene-bg.jpg */,
 				BA9696671CFA1E62006006B6 /* gameMusic.caf */,
@@ -270,9 +270,9 @@
 				BA2F15341CF8B9B300BE254F /* rainParticle.sks in Resources */,
 				BA2E00C11CFA1F6800ADB82E /* endscene-bg.jpg in Resources */,
 				BA2F15351CF8B9B300BE254F /* spark.png in Resources */,
-				BA9696601CF9498C006006B6 /* bluebutton.png in Resources */,
 				BA2F15031CF8B96800BE254F /* GameScene.sks in Resources */,
 				BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */,
+				BA28F0501CFD25A300EC8925 /* PlayScene.sks in Resources */,
 				BA2E00C61CFA270C00ADB82E /* menuMusic.caf in Resources */,
 				BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */,
 				BA2E00C41CFA25C300ADB82E /* darkbg.jpg in Resources */,
@@ -303,9 +303,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA2F15051CF8B96800BE254F /* GameScene.swift in Sources */,
+				BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */,
 				BA2F15071CF8B96800BE254F /* GameViewController.swift in Sources */,
 				BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */,
-				BACCFCBB1CFA5191000ECE8C /* PlayScene.swift in Sources */,
 				BA2F15011CF8B96800BE254F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
