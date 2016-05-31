@@ -59,7 +59,7 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             
             if self.nodeAtPoint(location) == self.playButton {
-                let reveal = SKTransition.flipHorizontalWithDuration(1)
+                let reveal = SKTransition.crossFadeWithDuration(0.8)
                 let letsPlay = PlayScene(size: self.size)
                 self.view?.presentScene(letsPlay, transition: reveal)
                 playButton.removeFromParent()
@@ -313,7 +313,4 @@ class GameScene: SKScene {
 //    }
 //    
 
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-    }
 }
