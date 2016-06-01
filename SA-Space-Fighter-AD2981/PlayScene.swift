@@ -91,7 +91,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
      
 //        delay(0.93){
-            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnLeftFlight), userInfo: nil, repeats: false)
+            _ = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(PlayScene.spawnLeftFlight), userInfo: nil, repeats: true)
 //        }
 //        delay(0.5){
 //            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnRightFlight), userInfo: nil, repeats: true)
@@ -263,65 +263,66 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             let path = UIBezierPath()
             
             // starting point for the path (bottom left)
-            path.moveToPoint(CGPoint(x: 0.5, y: 1900))
+            path.moveToPoint(CGPoint(x: 500, y: 2200))
             
             // *********************
             // ***** Left side *****
             // *********************
             
             // segment 1: line
-            path.addLineToPoint(CGPoint(x: 200, y: 150))
-            
+            path.addLineToPoint(CGPoint(x: 500, y: 100))
+//            path.addLinetoPoint(CGPoint(x: )
             // segment 2: curve
-            path.addCurveToPoint(CGPoint(x: 0, y: 12), // ending point
-                controlPoint1: CGPoint(x: 2, y: 14),
-                controlPoint2: CGPoint(x: 0, y: 14))
+//            path.addCurveToPoint(CGPoint(x: 350, y: 12), // ending point
+//                controlPoint1: CGPoint(x: 300, y: 1700),
+//                controlPoint2: CGPoint(x: 50, y: 2000))
             
             // segment 3: line
-            path.addLineToPoint(CGPoint(x: 0, y: 200))
-            
-            // *********************
-            // ****** Top side *****
-            // *********************
-            
-            // segment 4: arc
-            path.addArcWithCenter(CGPoint(x: 2, y: 2), // center point of circle
-                radius: 2, // this will make it meet our path line
-                startAngle: CGFloat(M_PI), // π radians = 180 degrees = straight left
-                endAngle: CGFloat(3*M_PI_2), // 3π/2 radians = 270 degrees = straight up
-                clockwise: true) // startAngle to endAngle goes in a clockwise direction
-            
-            // segment 5: line
-            path.addLineToPoint(CGPoint(x: 800, y: 0))
-            
-            // segment 6: arc
-            path.addArcWithCenter(CGPoint(x: 8, y: 2),
-                                  radius: 2,
-                                  startAngle: CGFloat(3*M_PI_2), // straight up
-                endAngle: CGFloat(0), // 0 radians = straight right
-                clockwise: true)
-            
-            // *********************
-            // ***** Right side ****
-            // *********************
-            
-            // segment 7: line
-            path.addLineToPoint(CGPoint(x: 100, y: 120))
-            
-            // segment 8: curve
-            path.addCurveToPoint(CGPoint(x: 8, y: 15), // ending point
-                controlPoint1: CGPoint(x: 10, y: 14),
-                controlPoint2: CGPoint(x: 8, y: 14))
-            
-            // segment 9: line
-            path.addLineToPoint(CGPoint(x: 800, y: 260))
-            
+            path.addLineToPoint(CGPoint(x: 100, y: 100))
+            path.addLineToPoint(CGPoint(x: 100, y: 2200))
+            path.addLineToPoint(CGPoint(x: -10, y: 2300))
+//            // *********************
+//            // ****** Top side *****
+//            // *********************
+//            
+//            // segment 4: arc
+//            path.addArcWithCenter(CGPoint(x: 2, y: 2), // center point of circle
+//                radius: 2, // this will make it meet our path line
+//                startAngle: CGFloat(M_PI), // π radians = 180 degrees = straight left
+//                endAngle: CGFloat(3*M_PI_2), // 3π/2 radians = 270 degrees = straight up
+//                clockwise: true) // startAngle to endAngle goes in a clockwise direction
+//            
+//            // segment 5: line
+//            path.addLineToPoint(CGPoint(x: 800, y: 0))
+//            
+//            // segment 6: arc
+//            path.addArcWithCenter(CGPoint(x: 8, y: 2),
+//                                  radius: 2,
+//                                  startAngle: CGFloat(3*M_PI_2), // straight up
+//                endAngle: CGFloat(0), // 0 radians = straight right
+//                clockwise: true)
+//            
+//            // *********************
+//            // ***** Right side ****
+//            // *********************
+//            
+//            // segment 7: line
+//            path.addLineToPoint(CGPoint(x: 100, y: 120))
+//            
+//            // segment 8: curve
+//            path.addCurveToPoint(CGPoint(x: 8, y: 15), // ending point
+//                controlPoint1: CGPoint(x: 10, y: 14),
+//                controlPoint2: CGPoint(x: 8, y: 14))
+//            
+//            // segment 9: line
+//            path.addLineToPoint(CGPoint(x: 800, y: 260))
+//            
             // *********************
             // **** Bottom side ****
             // *********************
             
             // segment 10: line
-            path.closePath() // draws the final line to close the path
+//            path.closePath() // draws the final line to close the path
             
             return path
         }
@@ -331,7 +332,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        let followCircle = SKAction.followPath(circle.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
         let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
 
-        Enemy.position = CGPoint(x: 200, y: self.size.width )
+//        Enemy.position = CGPoint(x: 500, y: self.size.width )
         Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
         Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
         Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
