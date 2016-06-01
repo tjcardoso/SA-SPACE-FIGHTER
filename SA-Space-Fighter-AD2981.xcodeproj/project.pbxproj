@@ -25,6 +25,7 @@
 		BA2F15351CF8B9B300BE254F /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15331CF8B9B300BE254F /* spark.png */; };
 		BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15361CF8C29E00BE254F /* EndScene.swift */; };
 		BA7006E71CF8C84400C0C55F /* bullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BA7006E61CF8C84400C0C55F /* bullet.atlas */; };
+		BA7F44011CFE18C400D2D09E /* EnemySpriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */; };
 		BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 		BA2F15331CF8B9B300BE254F /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../Galaga1/Galaga1/spark.png; sourceTree = "<group>"; };
 		BA2F15361CF8C29E00BE254F /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndScene.swift; path = ../../Galaga1/EndScene.swift; sourceTree = "<group>"; };
 		BA7006E61CF8C84400C0C55F /* bullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = bullet.atlas; path = ../../../../bullet.atlas; sourceTree = "<group>"; };
+		BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemySpriteController.swift; sourceTree = "<group>"; };
 		BA9696671CFA1E62006006B6 /* gameMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = gameMusic.caf; path = "../../../../Space-Fighter files/Music/gameMusic.caf"; sourceTree = "<group>"; };
 		BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,6 +131,7 @@
 				BA2F15041CF8B96800BE254F /* GameScene.swift */,
 				BA2F15061CF8B96800BE254F /* GameViewController.swift */,
 				BA2F15361CF8C29E00BE254F /* EndScene.swift */,
+				BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */,
 				BA2F15321CF8B9B300BE254F /* rainParticle.sks */,
 				BA2E00C51CFA270C00ADB82E /* menuMusic.caf */,
 				BA2E00C31CFA25C300ADB82E /* darkbg.jpg */,
@@ -307,6 +310,7 @@
 				BA2F15071CF8B96800BE254F /* GameViewController.swift in Sources */,
 				BA2F15371CF8C29E00BE254F /* EndScene.swift in Sources */,
 				BA2F15011CF8B96800BE254F /* AppDelegate.swift in Sources */,
+				BA7F44011CFE18C400D2D09E /* EnemySpriteController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

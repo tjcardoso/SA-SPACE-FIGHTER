@@ -32,7 +32,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let gameStartDelay  = SKAction.waitForDuration(3.0)
     var gameMusic       : AVAudioPlayer!
     
-    
     /* Create at delay function */
     func delay(delay: Double, closure: ()->()) {
         dispatch_after(
@@ -71,7 +70,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         /* Configure Scene */
         physicsWorld.contactDelegate = self
         self.scene?.backgroundColor = UIColor.blackColor()
-//        self.scene?.size = CGSize(width: 640, height: 1136)
         
         /* Add background particles */
         self.addChild(rainParticle)
@@ -79,15 +77,26 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         /* Setup and add player */
         Player.position = CGPointMake(self.size.width / 2, self.size.height / 5)
         Player.setScale(0.3)
-        Player.physicsBody = SKPhysicsBody(rectangleOfSize: Player.size)
+        Player.physicsBody = SKPhysicsBody(circleOfRadius: Player.size.width / 3)
         Player.physicsBody?.affectedByGravity = false
         Player.physicsBody?.categoryBitMask = PhysicsCatagory.Player
         Player.physicsBody?.contactTestBitMask = PhysicsCatagory.Enemy
         Player.physicsBody?.dynamic = false
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
+        /* Bullet and Enemy Creation Timer delay */
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
+        delay(2.7){
+            _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
+        }
+//        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
+     
+//        delay(0.93){
+            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnLeftFlight), userInfo: nil, repeats: false)
+//        }
+//        delay(0.5){
+//            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnRightFlight), userInfo: nil, repeats: true)
+//        }
+     
         
         self.addChild(Player)
         
@@ -97,10 +106,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         ScoreLbl.textColor = UIColor.whiteColor()
         self.view?.addSubview(ScoreLbl)
         
+        
         /* Add game music */
         func playGameMusic(){
             
-            delay(1.0) {
+            delay(0.3) {
                 do {
                     self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic", ofType: "caf")!))
                     self.gameMusic.play()
@@ -115,6 +125,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
     }
+    
+    
     
     func didBeginContact(contact: SKPhysicsContact) {
         
@@ -175,7 +187,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         let reveal = SKTransition.crossFadeWithDuration(1.0)
         let gameOver = EndScene(size: self.size)
         self.view?.presentScene(gameOver, transition: reveal)
-//        self.view?.presentScene(EndScene())
         ScoreLbl.removeFromSuperview()
     }
     
@@ -209,25 +220,158 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func SpawnEnemies(){
-        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-        let MinValue = self.size.width / 8
-        let MaxValue = self.size.width + 60
-        let SpawnPoint = UInt32(MaxValue - MinValue)
+    func SpawnRightEnemies(){
         
-        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+        
+//        let MinValue = self.size.width / 8
+//        let MaxValue = self.size.width + 60
+//        let SpawnPoint = UInt32(MaxValue - MinValue)
+//        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        
+        Enemy.position = CGPoint(x: (self.size.width), y: self.size.height)
         Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
         Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
         Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
         Enemy.physicsBody?.affectedByGravity = false
         Enemy.physicsBody?.dynamic = true
-        
-        let action = SKAction.moveToY(-70, duration: 3.0)
+        Enemy.zPosition = 50
+//        let action = SKAction.moveToY(-70, duration: 3.0)
+        let enemyExit = CGPoint(x: 0.5, y: 0.5)
+        let action = SKAction.moveTo(enemyExit, duration: 5)
         let actionDone = SKAction.removeFromParent()
         Enemy.runAction(SKAction.sequence([action, actionDone]))
+       
+        self.addChild(Enemy)
+        
+
+    }
+    
+    func SpawnLeftEnemies(){
+        
+        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+        
+//        let MinValue = self.size.width / 10
+//        let MaxValue = self.size.width + 60
+//        let SpawnPoint = UInt32(MaxValue - MinValue)
+//        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+        
+//        Enemy.position = CGPoint(x: 0.5, y: 2000)
+        func createBezierPath() -> UIBezierPath {
+            
+            // create a new path
+            let path = UIBezierPath()
+            
+            // starting point for the path (bottom left)
+            path.moveToPoint(CGPoint(x: 0.5, y: 1900))
+            
+            // *********************
+            // ***** Left side *****
+            // *********************
+            
+            // segment 1: line
+            path.addLineToPoint(CGPoint(x: 200, y: 150))
+            
+            // segment 2: curve
+            path.addCurveToPoint(CGPoint(x: 0, y: 12), // ending point
+                controlPoint1: CGPoint(x: 2, y: 14),
+                controlPoint2: CGPoint(x: 0, y: 14))
+            
+            // segment 3: line
+            path.addLineToPoint(CGPoint(x: 0, y: 200))
+            
+            // *********************
+            // ****** Top side *****
+            // *********************
+            
+            // segment 4: arc
+            path.addArcWithCenter(CGPoint(x: 2, y: 2), // center point of circle
+                radius: 2, // this will make it meet our path line
+                startAngle: CGFloat(M_PI), // π radians = 180 degrees = straight left
+                endAngle: CGFloat(3*M_PI_2), // 3π/2 radians = 270 degrees = straight up
+                clockwise: true) // startAngle to endAngle goes in a clockwise direction
+            
+            // segment 5: line
+            path.addLineToPoint(CGPoint(x: 800, y: 0))
+            
+            // segment 6: arc
+            path.addArcWithCenter(CGPoint(x: 8, y: 2),
+                                  radius: 2,
+                                  startAngle: CGFloat(3*M_PI_2), // straight up
+                endAngle: CGFloat(0), // 0 radians = straight right
+                clockwise: true)
+            
+            // *********************
+            // ***** Right side ****
+            // *********************
+            
+            // segment 7: line
+            path.addLineToPoint(CGPoint(x: 100, y: 120))
+            
+            // segment 8: curve
+            path.addCurveToPoint(CGPoint(x: 8, y: 15), // ending point
+                controlPoint1: CGPoint(x: 10, y: 14),
+                controlPoint2: CGPoint(x: 8, y: 14))
+            
+            // segment 9: line
+            path.addLineToPoint(CGPoint(x: 800, y: 260))
+            
+            // *********************
+            // **** Bottom side ****
+            // *********************
+            
+            // segment 10: line
+            path.closePath() // draws the final line to close the path
+            
+            return path
+        }
+//        let path = CGPathCreateMutable()
+        let path = createBezierPath()
+//        let circle = UIBezierPath(roundedRect: CGRectMake(0, 0, 400, 1000), cornerRadius: 400)
+//        let followCircle = SKAction.followPath(circle.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
+        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
+
+        Enemy.position = CGPoint(x: 200, y: self.size.width )
+        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
+        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+        Enemy.physicsBody?.affectedByGravity = false
+        Enemy.physicsBody?.dynamic = true
+        Enemy.zPosition = 1.5
+//        let action = SKAction.moveToY(-70, duration: 3.0)
+//        let enemyExit = CGPoint(x: 1200, y: -0.5)
+//        let enemyExit = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: -0.5)
+//        let action = SKAction.moveTo(enemyExit, duration: 3)
+        Enemy.runAction(SKAction!(followCircle))
+//        let actionDone = SKAction.removeFromParent()
+//        Enemy.runAction(SKAction.sequence([action, actionDone]))
         
         self.addChild(Enemy)
         
+    }
+    
+    func spawnLeftFlight() {
+        delay(5) {
+            for (var i=0;i<5;i++){
+                let value = Double(i)
+                self.delay(value/4){
+                    self.SpawnLeftEnemies()
+                }
+            }
+        }
+    }
+    
+    
+    /* function to spawn the right flight of Enemies */
+    func spawnRightFlight() {
+        delay(5) {
+            for (var i=0;i<5;i++){
+                let value = Double(i)
+                self.delay(value/4){
+                    self.SpawnRightEnemies()
+                }
+            }
+        }
     }
     
     
@@ -240,7 +384,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             //            Player.position.x = location.x
             //            Player.position.y = location.y + 80
             
-            let actionY = SKAction.moveToY(location.y + 80, duration: 0.2)
+            let actionY = SKAction.moveToY(location.y + 120, duration: 0.2)
             actionY.timingMode = .EaseInEaseOut
             Player.runAction(actionY)
             
@@ -256,7 +400,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.locationInNode(self)
             
             Player.position.x = location.x
-            Player.position.y = location.y + 80
+            Player.position.y = location.y + 120
             
         }
         
