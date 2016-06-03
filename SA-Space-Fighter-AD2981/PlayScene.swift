@@ -13,9 +13,10 @@ import AVFoundation
 
 
 struct PhysicsCatagory {
-    static let Enemy  : UInt32 = 1 //000000000000000000000000000001
-    static let Bullet : UInt32 = 2 //00000000000000000000000000010
-    static let Player : UInt32 = 3 //00000000000000000000000000100
+    static let Enemy        : UInt32    = 1 //000000000000000000000000000001
+    static let Bullet       : UInt32    = 2 //00000000000000000000000000010
+    static let Player       : UInt32    = 3 //00000000000000000000000000100
+    static var bulletDelay  : Double    = 1
 }
 
 
@@ -31,9 +32,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var playerBullet    = SKSpriteNode();
     let gameStartDelay  = SKAction.waitForDuration(3.0)
     var gameMusic       : AVAudioPlayer!
+    var bulletDelay     = Double()
     
     /* Create at delay function */
-    func delay(delay: Double, closure: ()->()) {
+    class func delay(delay: Double, closure: ()->()) {
         dispatch_after(
             dispatch_time(
                 DISPATCH_TIME_NOW,
@@ -48,8 +50,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         /* Setup your scene here */
         
         /* Setup particle emitter to scene */
-        let path = NSBundle.mainBundle().pathForResource("rainParticle", ofType: "sks")
-        let rainParticle = NSKeyedUnarchiver.unarchiveObjectWithFile(path!) as! SKEmitterNode
+        let rainParticlePath = NSBundle.mainBundle().pathForResource("rainParticle", ofType: "sks")
+        let rainParticle = NSKeyedUnarchiver.unarchiveObjectWithFile(rainParticlePath!) as! SKEmitterNode
         
         rainParticle.position = CGPointMake(self.size.width / 2,  self.size.height)
         rainParticle.particlePositionRange = CGVector(dx: frame.size.width, dy:frame.size.height)
@@ -85,18 +87,21 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         /* Bullet and Enemy Creation Timer delay */
         
-        delay(0.5){
+        PlayScene.delay(0.5){
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
+
+        _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(FlightPaths.spawnRightFlightOne), userInfo: nil, repeats: true)
+        
 //        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
      
 //        delay(0.93){
 //            _ = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(PlayScene.spawnLeftFlight), userInfo: nil, repeats: true)
 //        
 //        delay(3){
-            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(PlayScene.spawnFirstRightFlight), userInfo: nil, repeats: false)
-        
-            _ = NSTimer.scheduledTimerWithTimeInterval(9, target: self, selector: #selector(PlayScene.spawnFirstLeftFlight), userInfo: nil, repeats: false)
+//            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(PlayScene.spawnFirstRightFlight), userInfo: nil, repeats: false)
+//        
+//            _ = NSTimer.scheduledTimerWithTimeInterval(7, target: self, selector: #selector(PlayScene.spawnFirstLeftFlight), userInfo: nil, repeats: false)
 //        }
 //        delay(0.5){
 //            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnRightFlight), userInfo: nil, repeats: true)
@@ -115,7 +120,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         /* Add game music */
         func playGameMusic(){
             
-            delay(0.3) {
+            PlayScene.delay(0.3) {
                 do {
                     self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic", ofType: "caf")!))
                     self.gameMusic.play()
@@ -205,8 +210,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         playerBullet.zPosition = -5
         
         playerBullet.position = CGPointMake(Player.position.x, Player.position.y)
-        
-        let action = SKAction.moveToY(self.size.height + 150, duration: 0.8)
+        bulletDelay = 1
+        let action = SKAction.moveToY(self.size.height + 150, duration: bulletDelay)
         let actionDone = SKAction.removeFromParent()
         playerBullet.runAction(SKAction.sequence([action, actionDone]))
         playerBullet.setScale(3)
@@ -225,250 +230,300 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func SpawnFirstRightEnemies(){
+    func EnemySpawnTest(path: UIBezierPath, PathTime: Double) {
+        
         
         let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-        
-        func createBezierPath() -> UIBezierPath {
-            
-            // create a new path
-            let path = UIBezierPath()
-            
-            // starting point for the path (bottom left)
-            path.moveToPoint(CGPoint(x: 1000, y: 1800))
-            
-            // *********************
-            // ***** 1st Right side ****
-            // *********************
-            
-            path.addLineToPoint(CGPoint(x: 900, y: 1700))
-            
-            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
-                controlPoint1: CGPoint(x: 750, y: 1500),
-                controlPoint2: CGPoint(x: 650, y: 1450))
-            
-            path.addLineToPoint(CGPoint(x: 700, y: 450))
-            
-            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
-                controlPoint1: CGPoint(x: 500, y: 250),
-                controlPoint2: CGPoint(x: 500, y: 150))
-            
-            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
-            
-            //            path.closePath() // draws the final line to close the path
-            
-            return path
-        }
-    
         Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
         Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
         Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
         Enemy.physicsBody?.affectedByGravity = false
         Enemy.physicsBody?.dynamic = true
         
-        let path = createBezierPath()
-        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
-    
-        Enemy.runAction(SKAction!(followCircle))
-        
-        self.addChild(Enemy)
-    }
-    
-    func SpawnFirstLeftEnemies(){
-        
-        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-        
-        func createBezierPath() -> UIBezierPath {
-            
-            // create a new path
-            let path = UIBezierPath()
-            
-            // starting point for the path (bottom left)
-            path.moveToPoint(CGPoint(x: 0.5, y: 1800))
-            
-            // *********************
-            // ***** 1st Left side ****
-            // *********************
-            
-            path.addLineToPoint(CGPoint(x: 120, y: 1700))
-            
-            path.addCurveToPoint(CGPoint(x: 220, y: 1000), // ending point
-                controlPoint1: CGPoint(x: 150, y: 1500),
-                controlPoint2: CGPoint(x: 175, y: 1450))
-            
-            path.addLineToPoint(CGPoint(x: 300, y: 450))
-            
-            path.addCurveToPoint(CGPoint(x: 700, y: 450), // ending point
-                controlPoint1: CGPoint(x: 500, y: 250),
-                controlPoint2: CGPoint(x: 500, y: 150))
-            
-            path.addLineToPoint(CGPoint(x: 700, y: 3000)) //exit?
-            
-            //            path.closePath() // draws the final line to close the path
-            
-            return path
-        }
-        
-        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-        Enemy.physicsBody?.affectedByGravity = false
-        Enemy.physicsBody?.dynamic = true
-        
-        let path = createBezierPath()
-        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
+        let BezierPath = path
+        let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: false, duration: PathTime)
         
         Enemy.runAction(SKAction!(followCircle))
-        
         self.addChild(Enemy)
+        
     }
+
     
-    func SpawnSecondRightEnemies(){
-        
-        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-        
-        func createBezierPath() -> UIBezierPath {
-            
-            // create a new path
-            let path = UIBezierPath()
-            
-            // starting point for the path (bottom left)
-            path.moveToPoint(CGPoint(x: 1050, y: 1200))
-            
-            // *********************
-            // ***** 2nd Right side ****
-            // *********************
-            
+//    func TestEnemyMethod(){
+//        
+//        
+//        func createBezierPath() -> UIBezierPath {
+//          
+//            let path = UIBezierPath()
+//            path.moveToPoint(CGPoint(x: 1000, y: 1800))
 //            path.addLineToPoint(CGPoint(x: 900, y: 1700))
-            
-            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
-                controlPoint1: CGPoint(x: 750, y: 1500),
-                controlPoint2: CGPoint(x: 650, y: 1450))
-            
-            path.addLineToPoint(CGPoint(x: 700, y: 450))
-            
+//            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
+//                controlPoint1: CGPoint(x: 750, y: 1500),
+//                controlPoint2: CGPoint(x: 650, y: 1450))
+//            path.addLineToPoint(CGPoint(x: 700, y: 450))
 //            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
 //                controlPoint1: CGPoint(x: 500, y: 250),
 //                controlPoint2: CGPoint(x: 500, y: 150))
 //            
 //            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
-            
-            //            path.closePath() // draws the final line to close the path
-            
-            return path
-        }
-        
-        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-        Enemy.physicsBody?.affectedByGravity = false
-        Enemy.physicsBody?.dynamic = true
-        
-        let path = createBezierPath()
-        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
-        
-        Enemy.runAction(SKAction!(followCircle))
-        
-        self.addChild(Enemy)
-    }
+//            
+//            return path
+//        }
+//        
+//        let path = createBezierPath()
+//        
+//        for (var i=0;i<6;i++){
+//            let value = Double(i)
+//            self.delay(value/4){
+//                self.EnemySpawnTest(path, PathTime: 6)
+//            }
+//        }
+//    }
     
-    
-    func SpawnLeftEnemies(){
-        
-        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-        
-//        let MinValue = self.size.width / 10
-//        let MaxValue = self.size.width + 60
-//        let SpawnPoint = UInt32(MaxValue - MinValue)
-//        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
-        
-//        Enemy.position = CGPoint(x: 0.5, y: 2000)
-        func createBezierPath() -> UIBezierPath {
-            
-            // create a new path
-            let path = UIBezierPath()
-            
-            // starting point for the path (bottom left)
-            path.moveToPoint(CGPoint(x: 500, y: 2200))
-            
-            // *********************
-            // ***** Left side *****
-            // *********************
-            
-
-            path.addLineToPoint(CGPoint(x: 500, y: 200))
-
-
-//            path.addCurveToPoint(CGPoint(x: 350, y: 12), // ending point
-//                controlPoint1: CGPoint(x: 300, y: 1700),
-//                controlPoint2: CGPoint(x: 50, y: 2000))
-
-            path.addLineToPoint(CGPoint(x: 100, y: 200))
-            path.addLineToPoint(CGPoint(x: 100, y: 2200))
-            path.addLineToPoint(CGPoint(x: -300, y: 2300)) //exit?
-
-//            path.closePath() // draws the final line to close the path
-            
-            return path
-        }
-//        let path = CGPathCreateMutable()
-        let path = createBezierPath()
-//        let circle = UIBezierPath(roundedRect: CGRectMake(0, 0, 400, 1000), cornerRadius: 400)
-//        let followCircle = SKAction.followPath(circle.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
-        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
-
-//        Enemy.position = CGPoint(x: 500, y: self.size.width )
-        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-        Enemy.physicsBody?.affectedByGravity = false
-        Enemy.physicsBody?.dynamic = true
-//        let action = SKAction.moveToY(-70, duration: 3.0)
-//        let enemyExit = CGPoint(x: 1200, y: -0.5)
-//        let enemyExit = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: -0.5)
-//        let action = SKAction.moveTo(enemyExit, duration: 3)
-        Enemy.runAction(SKAction!(followCircle))
-//        let actionDone = SKAction.removeFromParent()
-//        Enemy.runAction(SKAction.sequence([action, actionDone]))
-        
-        self.addChild(Enemy)
-        
-    }
-    
-    func spawnLeftFlight() {
-        delay(5) {
-            for (var i=0;i<5;i++){
-                let value = Double(i)
-                self.delay(value/4){
-                    self.SpawnLeftEnemies()
-                }
-            }
-        }
-    }
-    
-    
-    /* function to spawn the right flight of Enemies */
-    func spawnFirstRightFlight() {
-        delay(5) {
-            for (var i=0;i<5;i++){
-                let value = Double(i)
-                self.delay(value/4){
-                    self.SpawnFirstRightEnemies()
-                }
-            }
-        }
-    }
-    
-    func spawnFirstLeftFlight() {
-        delay(5) {
-            for (var i=0;i<5;i++){
-                let value = Double(i)
-                self.delay(value/4){
-                    self.SpawnFirstLeftEnemies()
-                }
-            }
-        }
-    }
+//    func SpawnFirstRightEnemies(){
+//        
+//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+//        
+//        func createBezierPath() -> UIBezierPath {
+//            
+//            // create a new path
+//            let path = UIBezierPath()
+//            
+//            // starting point for the path (bottom left)
+//            path.moveToPoint(CGPoint(x: 1000, y: 1800))
+//            
+//            // *********************
+//            // ***** 1st Right side ****
+//            // *********************
+//            
+//            path.addLineToPoint(CGPoint(x: 900, y: 1700))
+//            
+//            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
+//                controlPoint1: CGPoint(x: 750, y: 1500),
+//                controlPoint2: CGPoint(x: 650, y: 1450))
+//            
+//            path.addLineToPoint(CGPoint(x: 700, y: 450))
+//            
+//            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
+//                controlPoint1: CGPoint(x: 500, y: 250),
+//                controlPoint2: CGPoint(x: 500, y: 150))
+//            
+//            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
+//            
+//            //            path.closePath() // draws the final line to close the path
+//            
+//            return path
+//        }
+//    
+//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
+//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+//        Enemy.physicsBody?.affectedByGravity = false
+//        Enemy.physicsBody?.dynamic = true
+//        
+//        let path = createBezierPath()
+//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
+//    
+//        Enemy.runAction(SKAction!(followCircle))
+//        
+//        self.addChild(Enemy)
+//    }
+//    
+//    func SpawnFirstLeftEnemies(){
+//        
+//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+//        
+//        func createBezierPath() -> UIBezierPath {
+//            
+//            // create a new path
+//            let path = UIBezierPath()
+//            
+//            // starting point for the path (bottom left)
+//            path.moveToPoint(CGPoint(x: 0.5, y: 1800))
+//            
+//            // *********************
+//            // ***** 1st Left side ****
+//            // *********************
+//            
+//            path.addLineToPoint(CGPoint(x: 120, y: 1700))
+//            
+//            path.addCurveToPoint(CGPoint(x: 220, y: 1000), // ending point
+//                controlPoint1: CGPoint(x: 150, y: 1500),
+//                controlPoint2: CGPoint(x: 175, y: 1450))
+//            
+//            path.addLineToPoint(CGPoint(x: 300, y: 450))
+//            
+//            path.addCurveToPoint(CGPoint(x: 700, y: 450), // ending point
+//                controlPoint1: CGPoint(x: 500, y: 250),
+//                controlPoint2: CGPoint(x: 500, y: 150))
+//            
+//            path.addLineToPoint(CGPoint(x: 700, y: 3000)) //exit?
+//            
+//            //            path.closePath() // draws the final line to close the path
+//            
+//            return path
+//        }
+//        
+//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
+//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+//        Enemy.physicsBody?.affectedByGravity = false
+//        Enemy.physicsBody?.dynamic = true
+//        
+//        let path = createBezierPath()
+//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
+//        
+//        Enemy.runAction(SKAction!(followCircle))
+//        
+//        self.addChild(Enemy)
+//    }
+//    
+//    func SpawnSecondRightEnemies(){
+//        
+//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+//        
+//        func createBezierPath() -> UIBezierPath {
+//            
+//            // create a new path
+//            let path = UIBezierPath()
+//            
+//            // starting point for the path (bottom left)
+//            path.moveToPoint(CGPoint(x: 1050, y: 1200))
+//            
+//            // *********************
+//            // ***** 2nd Right side ****
+//            // *********************
+//            
+////            path.addLineToPoint(CGPoint(x: 900, y: 1700))
+//            
+//            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
+//                controlPoint1: CGPoint(x: 750, y: 1500),
+//                controlPoint2: CGPoint(x: 650, y: 1450))
+//            
+//            path.addLineToPoint(CGPoint(x: 700, y: 450))
+//            
+////            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
+////                controlPoint1: CGPoint(x: 500, y: 250),
+////                controlPoint2: CGPoint(x: 500, y: 150))
+////            
+////            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
+//            
+//            //            path.closePath() // draws the final line to close the path
+//            
+//            return path
+//        }
+//        
+//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
+//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+//        Enemy.physicsBody?.affectedByGravity = false
+//        Enemy.physicsBody?.dynamic = true
+//        
+//        let path = createBezierPath()
+//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
+//        
+//        Enemy.runAction(SKAction!(followCircle))
+//        
+//        self.addChild(Enemy)
+//    }
+//    
+//    
+//    func SpawnLeftEnemies(){
+//        
+//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+//        
+////        let MinValue = self.size.width / 10
+////        let MaxValue = self.size.width + 60
+////        let SpawnPoint = UInt32(MaxValue - MinValue)
+////        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
+//        
+////        Enemy.position = CGPoint(x: 0.5, y: 2000)
+//        func createBezierPath() -> UIBezierPath {
+//            
+//            // create a new path
+//            let path = UIBezierPath()
+//            
+//            // starting point for the path (bottom left)
+//            path.moveToPoint(CGPoint(x: 500, y: 2200))
+//            
+//            // *********************
+//            // ***** Left side *****
+//            // *********************
+//            
+//
+//            path.addLineToPoint(CGPoint(x: 500, y: 200))
+//
+//
+////            path.addCurveToPoint(CGPoint(x: 350, y: 12), // ending point
+////                controlPoint1: CGPoint(x: 300, y: 1700),
+////                controlPoint2: CGPoint(x: 50, y: 2000))
+//
+//            path.addLineToPoint(CGPoint(x: 100, y: 200))
+//            path.addLineToPoint(CGPoint(x: 100, y: 2200))
+//            path.addLineToPoint(CGPoint(x: -300, y: 2300)) //exit?
+//
+////            path.closePath() // draws the final line to close the path
+//            
+//            return path
+//        }
+////        let path = CGPathCreateMutable()
+//        let path = createBezierPath()
+////        let circle = UIBezierPath(roundedRect: CGRectMake(0, 0, 400, 1000), cornerRadius: 400)
+////        let followCircle = SKAction.followPath(circle.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
+//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
+//
+////        Enemy.position = CGPoint(x: 500, y: self.size.width )
+//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
+//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+//        Enemy.physicsBody?.affectedByGravity = false
+//        Enemy.physicsBody?.dynamic = true
+////        let action = SKAction.moveToY(-70, duration: 3.0)
+////        let enemyExit = CGPoint(x: 1200, y: -0.5)
+////        let enemyExit = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: -0.5)
+////        let action = SKAction.moveTo(enemyExit, duration: 3)
+//        Enemy.runAction(SKAction!(followCircle))
+////        let actionDone = SKAction.removeFromParent()
+////        Enemy.runAction(SKAction.sequence([action, actionDone]))
+//        
+//        self.addChild(Enemy)
+//        
+//    }
+//    
+//    func spawnLeftFlight() {
+//        delay(5) {
+//            for (var i=0;i<5;i++){
+//                let value = Double(i)
+//                self.delay(value/4){
+//                    self.SpawnLeftEnemies()
+//                }
+//            }
+//        }
+//    }
+//    
+//    
+//    /* function to spawn the right flight of Enemies */
+//    func spawnFirstRightFlight() {
+//        delay(5) {
+//            for (var i=0;i<5;i++){
+//                let value = Double(i)
+//                self.delay(value/4){
+//                    self.SpawnFirstRightEnemies()
+//                }
+//            }
+//        }
+//    }
+//    
+//    func spawnFirstLeftFlight() {
+//        delay(5) {
+//            for (var i=0;i<5;i++){
+//                let value = Double(i)
+//                self.delay(value/4){
+//                    self.SpawnFirstLeftEnemies()
+//                }
+//            }
+//        }
+//    }
     
     func SpawnRandomEnemies(){
     //        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
@@ -520,6 +575,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             Player.position.x = location.x
             Player.position.y = location.y + 120
+            
             
         }
         
