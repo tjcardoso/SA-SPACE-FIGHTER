@@ -97,7 +97,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         PlayScene.delay(0.5){
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
-        
+
         PlayScene.delay(4.5) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
         }
@@ -214,6 +214,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         ScoreLbl.text = "\(Score)"
     }
+    
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
@@ -325,7 +326,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         let SlowEnemy = SKSpriteNode(imageNamed: "ship3")
         SlowEnemy.physicsBody = SKPhysicsBody(circleOfRadius: SlowEnemy.size.width / 2)
-//        SlowEnemy.physicsBody?.categoryBitMask = PhysicsCatagory.SlowEnemy
+        SlowEnemy.physicsBody?.categoryBitMask = PhysicsCatagory.SlowEnemy
         SlowEnemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
         SlowEnemy.physicsBody?.affectedByGravity = false
         SlowEnemy.physicsBody?.collisionBitMask = 0
