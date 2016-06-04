@@ -67,18 +67,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        }
     }
     
-    func playExplosionSound(){
-        do {
-            self.explosionSound =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("explosion1", ofType: "caf")!))
-            explosionSound?.prepareToPlay()
-            explosionSound?.volume = 1.5
-            self.explosionSound.play()
-            
-        } catch {
-            print("Error")
-        }
-    }
-    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
@@ -89,7 +77,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 do {
                     self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic3", ofType: "caf")!))
                     self.gameMusic?.prepareToPlay()
-                    self.gameMusic?.volume = 0.5
+                    self.gameMusic?.volume = 0.3
                     self.gameMusic.play()
                     
                 } catch {
@@ -248,7 +236,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func CollisionWithBullet(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
-        playExplosionSound()
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
+
         Enemy.removeFromParent()
         Bullet.removeFromParent()
         Score += 1
@@ -257,7 +246,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
-        playExplosionSound()
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
+
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
         Score += 10

@@ -23,6 +23,8 @@ class GameScene: SKScene {
         func playEndMusic(){
             do {
                 self.endMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuMusic", ofType: "caf")!))
+                self.endMusic?.prepareToPlay()
+                self.endMusic?.volume = 0.3
                 self.endMusic.play()
                 
             } catch {

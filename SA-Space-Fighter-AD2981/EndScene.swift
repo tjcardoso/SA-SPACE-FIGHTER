@@ -30,6 +30,8 @@ class EndScene : SKScene {
         func playEndMusic(){
             do {
                 self.endMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuMusic", ofType: "caf")!))
+                self.endMusic?.prepareToPlay()
+                self.endMusic?.volume = 0.3
                 self.endMusic.play()
                 
             } catch {
@@ -57,17 +59,6 @@ class EndScene : SKScene {
         addBackgroundImage()
         addRestartButton()
 
-//        RestartBtn = UIButton(frame: CGRectMake(self.view!.bounds.origin.x + (self.view!.bounds.width * 0.325), self.view!.bounds.origin.y + (self.view!.bounds.height * 0.8), self.view!.bounds.origin.x + (self.view!.bounds.width * 0.35), self.view!.bounds.origin.y + (self.view!.bounds.height * 0.05)))
-//        RestartBtn.layer.cornerRadius = 18.0
-//        RestartBtn.layer.borderWidth = 2.0
-//        RestartBtn.backgroundColor = UIColor(red: 24.0/100, green: 116.0/255, blue: 205.0/205, alpha: 1.0)
-//        RestartBtn.layer.borderColor = UIColor(red: 24.0/100, green: 116.0/255, blue: 205.0/205, alpha: 1.0).CGColor
-//        RestartBtn.setTitle("Restart", forState: UIControlState.Normal)
-//        RestartBtn.setTitleColor(UIColor(red: 255, green: 255, blue: 255, alpha: 1.0), forState: UIControlState.Normal)
-//        RestartBtn.addTarget(self, action: #selector(EndScene.Restart), forControlEvents: UIControlEvents.TouchUpInside)
-//        self.view?.addSubview(RestartBtn)
-        
-        
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         let Score = ScoreDefault.valueForKey("Score") as! NSInteger
         NSLog("Score: \(Score)")
@@ -103,7 +94,7 @@ class EndScene : SKScene {
             let location = touch.locationInNode(self)
             
             if self.nodeAtPoint(location) == self.restartButton {
-                /* TODO:  Find out if the button and bgimage need to be removed */
+                /* TODO:  Find out if the button and bgimage needs to be removed */
                 
 //                bgImage.removeFromParent()
 //                restartButton.removeFromParent()
