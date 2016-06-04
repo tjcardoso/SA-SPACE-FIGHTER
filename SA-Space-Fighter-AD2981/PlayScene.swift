@@ -482,7 +482,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    /*  Slow Enemy flight paths */
+    
+    
+    /*  Slow Enemy flight paths
+        ***********************  */
+ 
     func leftSlowEnemyFlightOne(){
         func createBezierPath() -> UIBezierPath {
             
@@ -499,7 +503,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         for i in 0..<1 {
             let value = Double(i)
             PlayScene.delay(value/4){
-                self.spawnSlowEnemy(path, PathTime: 10)
+                self.spawnSlowEnemy(path, PathTime: 20)
             }
         }
         
