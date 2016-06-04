@@ -118,10 +118,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
         }
         
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
         
         PlayScene.delay(21.5) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
         }
+        
         
         
 //        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
@@ -495,6 +500,28 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             path.moveToPoint(CGPoint(x: 0.5, y: 1400))
             path.addLineToPoint(CGPoint(x: 1300, y: 1400))
             path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 20)
+            }
+        }
+        
+    }
+    
+    func rightSlowEnemyFlightOne(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 1100, y: 1100))
+            path.addLineToPoint(CGPoint(x: -50, y: 1100))
+            path.addLineToPoint(CGPoint(x: -200, y: 3000))
             return path
         }
         
