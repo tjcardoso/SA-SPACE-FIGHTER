@@ -13,10 +13,11 @@ import AVFoundation
 
 
 struct PhysicsCatagory {
-    static let Enemy        : UInt32    = 1 //000000000000000000000000000001
-    static let Bullet       : UInt32    = 2 //00000000000000000000000000010
-    static let Player       : UInt32    = 3 //00000000000000000000000000100
-    static var bulletDelay  : Double    = 1
+    static let Enemy        : UInt32    = 1
+    static let Bullet       : UInt32    = 2
+    static let Player       : UInt32    = 3 
+    static let EnemyBullet  : UInt32    = 4
+    static let SlowEnemy    : UInt32    = 5
 }
 
 
@@ -25,7 +26,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     var Highscore       = Int()
     var Score           = Int()
-    var Player          = SKSpriteNode(imageNamed: "Spaceship")
+    var Player          = SKSpriteNode(imageNamed: "ship1")
     var ScoreLbl        = UILabel()
     let textureAtlas    = SKTextureAtlas(named:"bullet.atlas")
     var bulletArray     = Array<SKTexture>();
@@ -78,7 +79,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         /* Setup and add player */
         Player.position = CGPointMake(self.size.width / 2, self.size.height / 5)
-        Player.setScale(0.3)
+        Player.setScale(1.1)
         Player.physicsBody = SKPhysicsBody(circleOfRadius: Player.size.width / 3)
         Player.physicsBody?.affectedByGravity = false
         Player.physicsBody?.categoryBitMask = PhysicsCatagory.Player
@@ -86,27 +87,45 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Player.physicsBody?.dynamic = false
         
         /* Bullet and Enemy Creation Timer delay */
-        
+
+        /*
+        **********************
+        **** SPAWN TIMERS ****
+        **********************
+        */
+ 
         PlayScene.delay(0.5){
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
-
-        _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(FlightPaths.spawnRightFlightOne), userInfo: nil, repeats: true)
+        
+        PlayScene.delay(4.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(8.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+     
+        PlayScene.delay(12) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(17) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
+        
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
+        
+        PlayScene.delay(21.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
         
 //        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
-     
-//        delay(0.93){
-//            _ = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(PlayScene.spawnLeftFlight), userInfo: nil, repeats: true)
-//        
-//        delay(3){
-//            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(PlayScene.spawnFirstRightFlight), userInfo: nil, repeats: false)
-//        
-//            _ = NSTimer.scheduledTimerWithTimeInterval(7, target: self, selector: #selector(PlayScene.spawnFirstLeftFlight), userInfo: nil, repeats: false)
-//        }
-//        delay(0.5){
-//            _ = NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: #selector(PlayScene.spawnRightFlight), userInfo: nil, repeats: true)
-//        }
-     
+        
         
         self.addChild(Player)
         
@@ -153,6 +172,16 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
+        else if (((firstBody.categoryBitMask == PhysicsCatagory.SlowEnemy) && (secondBody.categoryBitMask == PhysicsCatagory.Bullet)) ||
+            ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.SlowEnemy))){
+            
+            if let firstNode = firstBody.node as? SKSpriteNode,
+                secondNode = secondBody.node as? SKSpriteNode {
+                SlowEnemyCollisionWithBullet((firstNode),
+                                    Bullet: (secondNode))
+            }
+            
+        }
         else if ((firstBody.categoryBitMask == PhysicsCatagory.Enemy) && (secondBody.categoryBitMask == PhysicsCatagory.Player) ||
             (firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy)){
             
@@ -164,6 +193,17 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
+        else if ((firstBody.categoryBitMask == PhysicsCatagory.SlowEnemy) && (secondBody.categoryBitMask == PhysicsCatagory.Player) ||
+            (firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.SlowEnemy)){
+            
+            
+            if let firstNode = firstBody.node as? SKSpriteNode,
+                secondNode = secondBody .node as? SKSpriteNode {
+                SlowEnemyCollisionWithPerson((firstNode),
+                                    Person: (secondNode))
+            }
+            
+        }
         
     }
     
@@ -171,6 +211,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Enemy.removeFromParent()
         Bullet.removeFromParent()
         Score += 1
+        
+        ScoreLbl.text = "\(Score)"
+    }
+    func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
+        SlowEnemy.removeFromParent()
+        Bullet.removeFromParent()
+        Score += 10
         
         ScoreLbl.text = "\(Score)"
     }
@@ -200,6 +247,31 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         ScoreLbl.removeFromSuperview()
     }
     
+    func SlowEnemyCollisionWithPerson(SlowEnemy:SKSpriteNode, Person: SKSpriteNode){
+        let ScoreDefault = NSUserDefaults.standardUserDefaults()
+        ScoreDefault.setValue(Score, forKey: "Score")
+        ScoreDefault.synchronize()
+        
+        
+        if (Score > Highscore){
+            
+            let HighscoreDefault = NSUserDefaults.standardUserDefaults()
+            HighscoreDefault.setValue(Score, forKey: "Highscore")
+            
+        }
+        
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
+        }
+        SlowEnemy.removeFromParent()
+        Person.removeFromParent()
+        let reveal = SKTransition.crossFadeWithDuration(1.0)
+        let gameOver = EndScene(size: self.size)
+        self.view?.presentScene(gameOver, transition: reveal)
+        ScoreLbl.removeFromSuperview()
+    }
+    
     
     func SpawnBullets(){
         
@@ -210,8 +282,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         playerBullet.zPosition = -5
         
         playerBullet.position = CGPointMake(Player.position.x, Player.position.y)
-        bulletDelay = 1
-        let action = SKAction.moveToY(self.size.height + 150, duration: bulletDelay)
+        bulletDelay = 0.8
+        let action = SKAction.moveToY(self.size.height + 250, duration: bulletDelay)
         let actionDone = SKAction.removeFromParent()
         playerBullet.runAction(SKAction.sequence([action, actionDone]))
         playerBullet.setScale(3)
@@ -230,43 +302,59 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func EnemySpawnTest(path: UIBezierPath, PathTime: Double) {
+    func spawnEnemyScout(path: UIBezierPath, PathTime: Double) {
         
         
-        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
+        let Enemy = SKSpriteNode(imageNamed: "ship2")
         Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
         Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+        Enemy.physicsBody?.collisionBitMask = 0
         Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
         Enemy.physicsBody?.affectedByGravity = false
         Enemy.physicsBody?.dynamic = true
-        
+//        Enemy.setScale(1.5)
         let BezierPath = path
-        let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: false, duration: PathTime)
+        let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: true, duration: PathTime)
         
         Enemy.runAction(SKAction!(followCircle))
         self.addChild(Enemy)
         
     }
 
+    func spawnSlowEnemy(path: UIBezierPath, PathTime: Double) {
+        
+        let SlowEnemy = SKSpriteNode(imageNamed: "ship3")
+        SlowEnemy.physicsBody = SKPhysicsBody(circleOfRadius: SlowEnemy.size.width / 2)
+//        SlowEnemy.physicsBody?.categoryBitMask = PhysicsCatagory.SlowEnemy
+        SlowEnemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+        SlowEnemy.physicsBody?.affectedByGravity = false
+        SlowEnemy.physicsBody?.collisionBitMask = 0
+        SlowEnemy.physicsBody?.dynamic = true
+        SlowEnemy.setScale(0.6)
+        let BezierPath = path
+        let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: true, duration: PathTime)
+        
+        SlowEnemy.runAction(SKAction!(followCircle))
+        self.addChild(SlowEnemy)
+        
+    }
     
-    func TestEnemyMethod(){
-        
-        
+    /* Enemy scout flights */
+    func rightEnemyFlightOne(){
         func createBezierPath() -> UIBezierPath {
           
             let path = UIBezierPath()
             path.moveToPoint(CGPoint(x: 1000, y: 1800))
             path.addLineToPoint(CGPoint(x: 900, y: 1700))
-            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
+            path.addCurveToPoint(CGPoint(x: 800, y: 1000),
                 controlPoint1: CGPoint(x: 750, y: 1500),
                 controlPoint2: CGPoint(x: 650, y: 1450))
             path.addLineToPoint(CGPoint(x: 700, y: 450))
-            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
+            path.addCurveToPoint(CGPoint(x: 300, y: 450),
                 controlPoint1: CGPoint(x: 500, y: 250),
                 controlPoint2: CGPoint(x: 500, y: 150))
             
-            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
-            
+            path.addLineToPoint(CGPoint(x: 300, y: 3000))
             return path
         }
         
@@ -275,255 +363,148 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         for i in 0..<6 {
             let value = Double(i)
             PlayScene.delay(value/4){
-                self.EnemySpawnTest(path, PathTime: 6)
+                self.spawnEnemyScout(path, PathTime: 5)
             }
         }
     }
     
-//    func SpawnFirstRightEnemies(){
-//        
-//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-//        
-//        func createBezierPath() -> UIBezierPath {
-//            
-//            // create a new path
-//            let path = UIBezierPath()
-//            
-//            // starting point for the path (bottom left)
-//            path.moveToPoint(CGPoint(x: 1000, y: 1800))
-//            
-//            // *********************
-//            // ***** 1st Right side ****
-//            // *********************
-//            
-//            path.addLineToPoint(CGPoint(x: 900, y: 1700))
-//            
-//            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
-//                controlPoint1: CGPoint(x: 750, y: 1500),
-//                controlPoint2: CGPoint(x: 650, y: 1450))
-//            
-//            path.addLineToPoint(CGPoint(x: 700, y: 450))
-//            
-//            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
-//                controlPoint1: CGPoint(x: 500, y: 250),
-//                controlPoint2: CGPoint(x: 500, y: 150))
-//            
-//            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
-//            
-//            //            path.closePath() // draws the final line to close the path
-//            
-//            return path
-//        }
-//    
-//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-//        Enemy.physicsBody?.affectedByGravity = false
-//        Enemy.physicsBody?.dynamic = true
-//        
-//        let path = createBezierPath()
-//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
-//    
-//        Enemy.runAction(SKAction!(followCircle))
-//        
-//        self.addChild(Enemy)
-//    }
-//    
-//    func SpawnFirstLeftEnemies(){
-//        
-//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-//        
-//        func createBezierPath() -> UIBezierPath {
-//            
-//            // create a new path
-//            let path = UIBezierPath()
-//            
-//            // starting point for the path (bottom left)
-//            path.moveToPoint(CGPoint(x: 0.5, y: 1800))
-//            
-//            // *********************
-//            // ***** 1st Left side ****
-//            // *********************
-//            
-//            path.addLineToPoint(CGPoint(x: 120, y: 1700))
-//            
-//            path.addCurveToPoint(CGPoint(x: 220, y: 1000), // ending point
-//                controlPoint1: CGPoint(x: 150, y: 1500),
-//                controlPoint2: CGPoint(x: 175, y: 1450))
-//            
-//            path.addLineToPoint(CGPoint(x: 300, y: 450))
-//            
-//            path.addCurveToPoint(CGPoint(x: 700, y: 450), // ending point
-//                controlPoint1: CGPoint(x: 500, y: 250),
-//                controlPoint2: CGPoint(x: 500, y: 150))
-//            
-//            path.addLineToPoint(CGPoint(x: 700, y: 3000)) //exit?
-//            
-//            //            path.closePath() // draws the final line to close the path
-//            
-//            return path
-//        }
-//        
-//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-//        Enemy.physicsBody?.affectedByGravity = false
-//        Enemy.physicsBody?.dynamic = true
-//        
-//        let path = createBezierPath()
-//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
-//        
-//        Enemy.runAction(SKAction!(followCircle))
-//        
-//        self.addChild(Enemy)
-//    }
-//    
-//    func SpawnSecondRightEnemies(){
-//        
-//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-//        
-//        func createBezierPath() -> UIBezierPath {
-//            
-//            // create a new path
-//            let path = UIBezierPath()
-//            
-//            // starting point for the path (bottom left)
-//            path.moveToPoint(CGPoint(x: 1050, y: 1200))
-//            
-//            // *********************
-//            // ***** 2nd Right side ****
-//            // *********************
-//            
-////            path.addLineToPoint(CGPoint(x: 900, y: 1700))
-//            
-//            path.addCurveToPoint(CGPoint(x: 800, y: 1000), // ending point
-//                controlPoint1: CGPoint(x: 750, y: 1500),
-//                controlPoint2: CGPoint(x: 650, y: 1450))
-//            
-//            path.addLineToPoint(CGPoint(x: 700, y: 450))
-//            
-////            path.addCurveToPoint(CGPoint(x: 300, y: 450), // ending point
-////                controlPoint1: CGPoint(x: 500, y: 250),
-////                controlPoint2: CGPoint(x: 500, y: 150))
-////            
-////            path.addLineToPoint(CGPoint(x: 300, y: 3000)) //exit?
-//            
-//            //            path.closePath() // draws the final line to close the path
-//            
-//            return path
-//        }
-//        
-//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-//        Enemy.physicsBody?.affectedByGravity = false
-//        Enemy.physicsBody?.dynamic = true
-//        
-//        let path = createBezierPath()
-//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 6.0)
-//        
-//        Enemy.runAction(SKAction!(followCircle))
-//        
-//        self.addChild(Enemy)
-//    }
-//    
-//    
-//    func SpawnLeftEnemies(){
-//        
-//        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
-//        
-////        let MinValue = self.size.width / 10
-////        let MaxValue = self.size.width + 60
-////        let SpawnPoint = UInt32(MaxValue - MinValue)
-////        Enemy.position = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: self.size.height)
-//        
-////        Enemy.position = CGPoint(x: 0.5, y: 2000)
-//        func createBezierPath() -> UIBezierPath {
-//            
-//            // create a new path
-//            let path = UIBezierPath()
-//            
-//            // starting point for the path (bottom left)
-//            path.moveToPoint(CGPoint(x: 500, y: 2200))
-//            
-//            // *********************
-//            // ***** Left side *****
-//            // *********************
-//            
-//
-//            path.addLineToPoint(CGPoint(x: 500, y: 200))
-//
-//
-////            path.addCurveToPoint(CGPoint(x: 350, y: 12), // ending point
-////                controlPoint1: CGPoint(x: 300, y: 1700),
-////                controlPoint2: CGPoint(x: 50, y: 2000))
-//
-//            path.addLineToPoint(CGPoint(x: 100, y: 200))
-//            path.addLineToPoint(CGPoint(x: 100, y: 2200))
-//            path.addLineToPoint(CGPoint(x: -300, y: 2300)) //exit?
-//
-////            path.closePath() // draws the final line to close the path
-//            
-//            return path
-//        }
-////        let path = CGPathCreateMutable()
-//        let path = createBezierPath()
-////        let circle = UIBezierPath(roundedRect: CGRectMake(0, 0, 400, 1000), cornerRadius: 400)
-////        let followCircle = SKAction.followPath(circle.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
-//        let followCircle = SKAction.followPath(path.CGPath, asOffset: true, orientToPath: false, duration: 5.0)
-//
-////        Enemy.position = CGPoint(x: 500, y: self.size.width )
-//        Enemy.physicsBody = SKPhysicsBody(rectangleOfSize: Enemy.size)
-//        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
-//        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
-//        Enemy.physicsBody?.affectedByGravity = false
-//        Enemy.physicsBody?.dynamic = true
-////        let action = SKAction.moveToY(-70, duration: 3.0)
-////        let enemyExit = CGPoint(x: 1200, y: -0.5)
-////        let enemyExit = CGPoint(x: CGFloat(arc4random_uniform(SpawnPoint)), y: -0.5)
-////        let action = SKAction.moveTo(enemyExit, duration: 3)
-//        Enemy.runAction(SKAction!(followCircle))
-////        let actionDone = SKAction.removeFromParent()
-////        Enemy.runAction(SKAction.sequence([action, actionDone]))
-//        
-//        self.addChild(Enemy)
-//        
-//    }
-//    
-//    func spawnLeftFlight() {
-//        delay(5) {
-//            for (var i=0;i<5;i++){
-//                let value = Double(i)
-//                self.delay(value/4){
-//                    self.SpawnLeftEnemies()
-//                }
-//            }
-//        }
-//    }
-//    
-//    
-//    /* function to spawn the right flight of Enemies */
-//    func spawnFirstRightFlight() {
-//        delay(5) {
-//            for (var i=0;i<5;i++){
-//                let value = Double(i)
-//                self.delay(value/4){
-//                    self.SpawnFirstRightEnemies()
-//                }
-//            }
-//        }
-//    }
-//    
-//    func spawnFirstLeftFlight() {
-//        delay(5) {
-//            for (var i=0;i<5;i++){
-//                let value = Double(i)
-//                self.delay(value/4){
-//                    self.SpawnFirstLeftEnemies()
-//                }
-//            }
-//        }
-//    }
+    func leftEnemyFlightOne(){
+        func createBezierPath() -> UIBezierPath {
+
+            let path = UIBezierPath()
+
+            path.moveToPoint(CGPoint(x: 0.5, y: 1800))
+
+            path.addLineToPoint(CGPoint(x: 120, y: 1700))
+
+            path.addCurveToPoint(CGPoint(x: 220, y: 1000),
+            controlPoint1: CGPoint(x: 150, y: 1500),
+            controlPoint2: CGPoint(x: 175, y: 1450))
+
+            path.addLineToPoint(CGPoint(x: 300, y: 450))
+
+            path.addCurveToPoint(CGPoint(x: 700, y: 450),
+            controlPoint1: CGPoint(x: 500, y: 250),
+            controlPoint2: CGPoint(x: 500, y: 150))
+
+            path.addLineToPoint(CGPoint(x: 700, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<6 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+
+    }
+    
+    func rightEnemyFlightTwo(){
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 1050, y: 1100))
+            
+            path.addCurveToPoint(CGPoint(x: 0.5, y: 450),
+                                 controlPoint1: CGPoint(x: 250, y: 1100),
+                                 controlPoint2: CGPoint(x: 500, y: 500))
+            
+            path.addLineToPoint(CGPoint(x: -100, y: 450))
+            path.addLineToPoint(CGPoint(x: -300, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<6 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    
+    func leftEnemyFlightTwo(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 0.5, y: 1100))
+            
+            path.addCurveToPoint(CGPoint(x: 1050, y: 450),
+                                 controlPoint1: CGPoint(x: 500, y: 1100),
+                                 controlPoint2: CGPoint(x: 250, y: 500))
+            
+            path.addLineToPoint(CGPoint(x: 1300, y: 450))
+            path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<6 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    
+    func rightEnemyFlightThree(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: 1050, y: 900))
+            
+            path.addCurveToPoint(CGPoint(x: 100, y: 200),
+                                 controlPoint1: CGPoint(x: 750, y: 1500),
+                                 controlPoint2: CGPoint(x: 650, y: 1450))
+            path.addLineToPoint(CGPoint(x: 700, y: 450))
+            
+            path.addLineToPoint(CGPoint(x: -150, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<4 {
+            let value = Double(i)
+            PlayScene.delay(value/3){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    
+    /*  Slow Enemy flight paths */
+    func leftSlowEnemyFlightOne(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 0.5, y: 1400))
+            path.addLineToPoint(CGPoint(x: 1300, y: 1400))
+            path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 10)
+            }
+        }
+        
+    }
+    
+    
     
     func SpawnRandomEnemies(){
     //        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
