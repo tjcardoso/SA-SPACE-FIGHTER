@@ -25,19 +25,24 @@ struct PhysicsCatagory {
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
-    var Highscore       = Int()
-    var Score           = Int()
-    var Player          = SKSpriteNode(imageNamed: "ship1")
-    var ScoreLbl        = UILabel()
-    let textureAtlas    = SKTextureAtlas(named:"bullet.atlas")
-    var bulletArray     = Array<SKTexture>();
-    var playerBullet    = SKSpriteNode();
-    let gameStartDelay  = SKAction.waitForDuration(3.0)
-    var bulletDelay     = Double()
-    var gameMusic       : AVAudioPlayer!
-    var bulletSound     : AVAudioPlayer!
-    var explosionSound  : AVAudioPlayer!
-    
+    var Highscore           = Int()
+    var Score               = Int()
+    var Player              = SKSpriteNode(imageNamed: "ship1")
+    var Enemy               = SKSpriteNode(imageNamed: "ship2")
+    var SlowEnemy           = SKSpriteNode(imageNamed: "ship3")
+    var ScoreLbl            = UILabel()
+    let textureAtlas        = SKTextureAtlas(named:"bullet.atlas")
+    var bulletArray         = Array<SKTexture>();
+    var playerBullet        = SKSpriteNode();
+    let gameStartDelay      = SKAction.waitForDuration(3.0)
+    var bulletDelay         = Double()
+    let enemyScoutPoints    = 20
+    let slowEnemyPoints     = 25
+    var gameMusic           : AVAudioPlayer!
+    var bulletSound         : AVAudioPlayer!
+    var explosionSound      : AVAudioPlayer!
+    var _dLastShootTime     : CFTimeInterval = 1
+
     
     /* Create at delay function */
     class func delay(delay: Double, closure: ()->()) {
@@ -51,29 +56,24 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
-    func playBulletSound(){
-        do {
-            self.bulletSound =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("zap2", ofType: "caf")!))
-            bulletSound?.prepareToPlay()
-            bulletSound?.volume = 0.1
-            self.bulletSound.play()
-            
-        } catch {
-            print("Error")
-        }
-//        
-//        func stop(){
-//            bulletSound.stop()
-//        }
+    /* display enemy points upon enemy death */
+    func displayEnemyPoints(pos: CGPoint, amount: Int){
+        let pointDisplay        = SKLabelNode(fontNamed: "courier-bold")
+        pointDisplay.text       = "+\(amount)"
+        pointDisplay.fontSize   = 30;
+        pointDisplay.zPosition  = 3;
+        pointDisplay.position   = pos
+        let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(0.15),SKAction.fadeOutWithDuration(0.15)])
+        pointDisplay.runAction(SKAction.repeatAction(animatePoint, count: 1))
+        addChild(pointDisplay)
     }
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
         
         /* Add game music */
         func playGameMusic(){
             
-            PlayScene.delay(0.3) {
+            PlayScene.delay(1) {
                 do {
                     self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic3", ofType: "caf")!))
                     self.gameMusic?.prepareToPlay()
@@ -87,8 +87,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         }
         playGameMusic()
-        
-        
         
         
         /* Setup particle emitter to scene */
@@ -126,6 +124,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Player.physicsBody?.categoryBitMask = PhysicsCatagory.Player
         Player.physicsBody?.contactTestBitMask = PhysicsCatagory.Enemy
         Player.physicsBody?.dynamic = false
+        self.addChild(Player)
+
         
         /* Bullet and Enemy Creation Timer delay */
 
@@ -134,8 +134,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         **** SPAWN TIMERS ****
         **********************
         */
- 
-        PlayScene.delay(0.5){
+        
+        /* calling displayEnemyPoints method one time arbitrarily prevents a delay when first enemy is killed */
+        PlayScene.delay(0.7){
+            let pos1 = CGPointMake(-50, -50)
+            let amount1 = 1
+            self.displayEnemyPoints(pos1, amount: amount1)
+        }
+        
+        PlayScene.delay(0.8){
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
 
@@ -159,6 +166,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
         }
         
+        
         PlayScene.delay(17.5) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
         }
@@ -173,7 +181,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
         
         
-        self.addChild(Player)
         
         /* Add score counter */
         ScoreLbl.text  = "\(Score)"
@@ -197,6 +204,16 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 secondNode = secondBody.node as? SKSpriteNode {
                 CollisionWithBullet((firstNode),
                                     Bullet: (secondNode))
+            }
+            
+        }
+        else if ((firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player) ||
+            (firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet)){
+            
+            if let firstNode = firstBody.node as? SKSpriteNode,
+                secondNode = secondBody .node as? SKSpriteNode {
+                EnemyBulletCollisionWithPerson((firstNode),
+                                               Person: (secondNode))
             }
             
         }
@@ -237,20 +254,24 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func CollisionWithBullet(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
         runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
-
+        var pos = CGPoint()
+        pos = CGPointMake(Enemy.position.x + 70, Enemy.position.y - 70)
+        self.displayEnemyPoints(pos, amount: enemyScoutPoints)
         Enemy.removeFromParent()
         Bullet.removeFromParent()
-        Score += 1
+        Score += enemyScoutPoints
         
         ScoreLbl.text = "\(Score)"
     }
     
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
         runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
-
+        var pos = CGPoint()
+        pos = CGPointMake(SlowEnemy.position.x + 70, SlowEnemy.position.y - 70)
+        self.displayEnemyPoints(pos, amount: slowEnemyPoints)
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
-        Score += 10
+        Score += slowEnemyPoints
         
         ScoreLbl.text = "\(Score)"
     }
@@ -275,6 +296,34 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             gameMusic = nil
         }
         Enemy.removeFromParent()
+        Person.removeFromParent()
+        let reveal = SKTransition.crossFadeWithDuration(1.0)
+        let gameOver = EndScene(size: self.size)
+        self.view?.presentScene(gameOver, transition: reveal)
+        ScoreLbl.removeFromSuperview()
+    }
+    
+    func EnemyBulletCollisionWithPerson(EnemyBullet: SKSpriteNode, Person: SKSpriteNode){
+        
+        
+        let ScoreDefault = NSUserDefaults.standardUserDefaults()
+        ScoreDefault.setValue(Score, forKey: "Score")
+        ScoreDefault.synchronize()
+        
+        
+        if (Score > Highscore){
+            
+            let HighscoreDefault = NSUserDefaults.standardUserDefaults()
+            HighscoreDefault.setValue(Score, forKey: "Highscore")
+            
+        }
+        
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
+        }
+        
+        EnemyBullet.removeFromParent()
         Person.removeFromParent()
         let reveal = SKTransition.crossFadeWithDuration(1.0)
         let gameOver = EndScene(size: self.size)
@@ -337,6 +386,52 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         self.playerBullet.runAction(repeatAction)
         
     }
+
+    func shoot(enemyPos: CGPoint) {
+        let EnemyBullet = SKSpriteNode(imageNamed: "enemyBullet")
+        EnemyBullet.color = UIColor.redColor()
+        EnemyBullet.colorBlendFactor = 0.8
+        EnemyBullet.setScale(5)
+//        EnemyBullet.zPosition = -0.5
+        
+        EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
+        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.Player
+        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.EnemyBullet
+        EnemyBullet.physicsBody?.affectedByGravity = false
+        EnemyBullet.physicsBody?.dynamic = false
+        EnemyBullet.position = enemyPos
+        
+//        targetSprite.parent?.addChild(EnemyBullet)
+        self.addChild(EnemyBullet)
+        let action = SKAction.moveTo(CGPoint(x: Player.position.x, y: Player.position.y), duration: 5)
+        let actionDone = SKAction.removeFromParent()
+        EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
+    
+    }
+
+//    func spawnEnemyBullets(){
+//        
+////        let EnemyBullet = SKSpriteNode(imageNamed: "enemyBullet")
+//        EnemyBullet.zPosition = -5
+//        
+//        EnemyBullet.position = CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y)
+//        bulletDelay = 0.8
+//        let playerPos = CGPointMake(Player.position.x, Player.position.y)
+//        let action = SKAction.moveTo(playerPos, duration: 5)
+//        let actionDone = SKAction.removeFromParent()
+//        EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
+//        EnemyBullet.setScale(3)
+//        EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
+//        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.Bullet2
+//        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.Player
+//        EnemyBullet.physicsBody?.affectedByGravity = false
+//        EnemyBullet.physicsBody?.dynamic = false
+//        self.addChild(EnemyBullet)
+////        
+////        self.EnemyBullet.runAction(repeatAction)
+//        
+//    }
+    
     
     func spawnEnemyScout(path: UIBezierPath, PathTime: Double) {
         
@@ -372,6 +467,14 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         SlowEnemy.runAction(SKAction!(followCircle))
         self.addChild(SlowEnemy)
+        
+        PlayScene.delay(1.5){
+            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
+        }
+        
+        PlayScene.delay(3){
+            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
+        }
         
     }
     
@@ -608,8 +711,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             let actionX = SKAction.moveToX(location.x, duration: 0.2)
             actionX.timingMode = .EaseInEaseOut
             Player.runAction(actionX)
-            
         }
+        
+        
+        
+        
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -627,5 +733,23 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+//        if currentTime - _dLastShootTime >= 1 {
+//            shoot(Player)
+//            _dLastShootTime=currentTime
+//        }
+        
+        if Player.position.x < 100 {
+            Player.position.x = 100
+        }
+        else if Player.position.x > 990 {
+            Player.position.x = 990
+        }
+        else if Player.position.y < 50 {
+            Player.position.y = 50
+        }
+        else if Player.position.y > 1850 {
+            Player.position.y = 1850
+        }
+        
     }
 }
