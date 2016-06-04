@@ -289,7 +289,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         playerBullet.position = CGPointMake(Player.position.x, Player.position.y)
         bulletDelay = 0.8
-        let action = SKAction.moveToY(self.size.height + 250, duration: bulletDelay)
+        let action = SKAction.moveToY(self.size.height + 1000, duration: bulletDelay)
         let actionDone = SKAction.removeFromParent()
         playerBullet.runAction(SKAction.sequence([action, actionDone]))
         playerBullet.setScale(3)
