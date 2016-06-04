@@ -50,6 +50,23 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        /* Add game music */
+        func playGameMusic(){
+            
+            PlayScene.delay(0.3) {
+                do {
+                    self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic3", ofType: "caf")!))
+                    self.gameMusic.play()
+                    
+                } catch {
+                    print("Error")
+                }
+            }
+            
+        }
+        playGameMusic()
+        
+        
         /* Setup particle emitter to scene */
         let rainParticlePath = NSBundle.mainBundle().pathForResource("rainParticle", ofType: "sks")
         let rainParticle = NSKeyedUnarchiver.unarchiveObjectWithFile(rainParticlePath!) as! SKEmitterNode
@@ -139,24 +156,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         ScoreLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         ScoreLbl.textColor = UIColor.whiteColor()
         self.view?.addSubview(ScoreLbl)
-        
-        
-        /* Add game music */
-        func playGameMusic(){
-            
-            PlayScene.delay(0.3) {
-                do {
-                    self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic", ofType: "caf")!))
-                    self.gameMusic.play()
-                    
-                } catch {
-                    print("Error")
-                }
-            }
-            
-        }
-        playGameMusic()
-        
         
     }
     
