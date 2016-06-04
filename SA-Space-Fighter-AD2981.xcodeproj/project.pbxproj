@@ -37,6 +37,9 @@
 		BAE12C081D029D4D00696072 /* EndScene.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8941D024D2F00E3785A /* EndScene.swift */; };
 		BAE12C091D029D4D00696072 /* gameMusic3.caf in Resources */ = {isa = PBXBuildFile; fileRef = BABC1B471D029C7400FBC64D /* gameMusic3.caf */; };
 		BAE12C0E1D029D4D00696072 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15261CF8B96800BE254F /* Info.plist */; };
+		BAE12C151D02A0DC00696072 /* explosion1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C121D02A0C300696072 /* explosion1.caf */; };
+		BAE12C161D02A0DC00696072 /* zap1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C131D02A0C300696072 /* zap1.caf */; };
+		BAE12C171D02A0DC00696072 /* zap2.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C141D02A0C300696072 /* zap2.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemySpriteController.swift; sourceTree = "<group>"; };
 		BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 		BABC1B471D029C7400FBC64D /* gameMusic3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameMusic3.caf; sourceTree = "<group>"; };
+		BAE12C121D02A0C300696072 /* explosion1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion1.caf; sourceTree = "<group>"; };
+		BAE12C131D02A0C300696072 /* zap1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap1.caf; sourceTree = "<group>"; };
+		BAE12C141D02A0C300696072 /* zap2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap2.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,9 @@
 				BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */,
 				BA7EF8941D024D2F00E3785A /* EndScene.swift */,
 				BA7EF8961D024D5100E3785A /* rainParticle.sks */,
+				BAE12C121D02A0C300696072 /* explosion1.caf */,
+				BAE12C131D02A0C300696072 /* zap1.caf */,
+				BAE12C141D02A0C300696072 /* zap2.caf */,
 				BA2E00C51CFA270C00ADB82E /* menuMusic.caf */,
 				BA7EF8981D024D6600E3785A /* endscene-bg.jpg */,
 				BABC1B471D029C7400FBC64D /* gameMusic3.caf */,
@@ -292,6 +301,9 @@
 				BAE12C081D029D4D00696072 /* EndScene.swift in Resources */,
 				BAE12C091D029D4D00696072 /* gameMusic3.caf in Resources */,
 				BAE12C0E1D029D4D00696072 /* Info.plist in Resources */,
+				BAE12C151D02A0DC00696072 /* explosion1.caf in Resources */,
+				BAE12C161D02A0DC00696072 /* zap1.caf in Resources */,
+				BAE12C171D02A0DC00696072 /* zap2.caf in Resources */,
 				BA2F15031CF8B96800BE254F /* GameScene.sks in Resources */,
 				BA28F0501CFD25A300EC8925 /* PlayScene.sks in Resources */,
 				BA2E00C61CFA270C00ADB82E /* menuMusic.caf in Resources */,

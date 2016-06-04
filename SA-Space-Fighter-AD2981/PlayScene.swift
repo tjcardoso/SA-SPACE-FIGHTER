@@ -22,6 +22,7 @@ struct PhysicsCatagory {
 
 
 
+
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     var Highscore       = Int()
@@ -32,8 +33,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var bulletArray     = Array<SKTexture>();
     var playerBullet    = SKSpriteNode();
     let gameStartDelay  = SKAction.waitForDuration(3.0)
-    var gameMusic       : AVAudioPlayer!
     var bulletDelay     = Double()
+    var gameMusic       : AVAudioPlayer!
+    var bulletSound     : AVAudioPlayer!
+    
+    
     
     /* Create at delay function */
     class func delay(delay: Double, closure: ()->()) {
@@ -47,6 +51,18 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
+    func playBulletSound(){
+        do {
+            self.bulletSound =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("zap2", ofType: "caf")!))
+            bulletSound?.prepareToPlay()
+            bulletSound?.volume = 0.1
+            self.bulletSound.play()
+            
+        } catch {
+            print("Error")
+        }
+    }
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
@@ -56,6 +72,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             PlayScene.delay(0.3) {
                 do {
                     self.gameMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("gameMusic3", ofType: "caf")!))
+                    self.gameMusic?.prepareToPlay()
+                    self.gameMusic?.volume = 0.5
                     self.gameMusic.play()
                     
                 } catch {
@@ -65,6 +83,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         }
         playGameMusic()
+        
+        
         
         
         /* Setup particle emitter to scene */
@@ -212,6 +232,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func CollisionWithBullet(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
         Enemy.removeFromParent()
         Bullet.removeFromParent()
         Score += 1
@@ -220,6 +241,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
         Score += 10
@@ -228,6 +250,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func CollisionWithPerson(Enemy:SKSpriteNode, Person: SKSpriteNode){
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         ScoreDefault.setValue(Score, forKey: "Score")
         ScoreDefault.synchronize()
@@ -297,8 +320,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         playerBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.Enemy
         playerBullet.physicsBody?.affectedByGravity = false
         playerBullet.physicsBody?.dynamic = false
-        
+//        runAction(SKAction.playSoundFileNamed("zap2.caf", waitForCompletion: false))
         self.addChild(playerBullet)
+        self.playBulletSound()
         
         let animateAction = SKAction.animateWithTextures(self.bulletArray, timePerFrame: 0.2)
         let repeatAction = SKAction.repeatActionForever(animateAction)
