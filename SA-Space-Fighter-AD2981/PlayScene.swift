@@ -30,6 +30,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var Player              = SKSpriteNode(imageNamed: "ship1")
     var Enemy               = SKSpriteNode(imageNamed: "ship2")
     var SlowEnemy           = SKSpriteNode(imageNamed: "ship3")
+    var EnemyBullet         = SKSpriteNode(imageNamed: "enemyBullet")
     var ScoreLbl            = UILabel()
     let textureAtlas        = SKTextureAtlas(named:"bullet.atlas")
     var bulletArray         = Array<SKTexture>();
@@ -146,42 +147,45 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
 
-        PlayScene.delay(4.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
-        }
-        PlayScene.delay(8.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
-        }
-     
-        PlayScene.delay(12) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
-        }
-        
-        PlayScene.delay(17) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
-        }
-        
-        
-        PlayScene.delay(17.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
-        }
+//        PlayScene.delay(4.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
+//        }
+//        PlayScene.delay(8.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
+//        }
+//     
+//        PlayScene.delay(12) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
+//        }
+//        
+//        PlayScene.delay(17) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
+//        }
         
         
-        PlayScene.delay(17.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
-        }
-        
-        
-        PlayScene.delay(21.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+//        PlayScene.delay(17.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
+//        }
+//        
+//        
+//        PlayScene.delay(17.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
+//        }
+        PlayScene.delay(3.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: true)
         }
         
         
+        PlayScene.delay(3.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: true)
+        }
+//        
+//        PlayScene.delay(21.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+//        }
+//        
         
-//        _ = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: #selector(PlayScene.SpawnEnemies), userInfo: nil, repeats: true)
-        
-        
-        
+
         /* Add score counter */
         ScoreLbl.text  = "\(Score)"
         ScoreLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
@@ -197,6 +201,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         let firstBody : SKPhysicsBody = contact.bodyA
         let secondBody : SKPhysicsBody = contact.bodyB
         
+        
         if (((firstBody.categoryBitMask == PhysicsCatagory.Enemy) && (secondBody.categoryBitMask == PhysicsCatagory.Bullet)) ||
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy))){
             
@@ -207,13 +212,26 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
-        else if ((firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player) ||
-            (firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet)){
+        
+        /* This collision detection statement isnt detecting any collision */
+        
+        else if ((firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet) ||
+            (firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player)){
             
             if let firstNode = firstBody.node as? SKSpriteNode,
                 secondNode = secondBody .node as? SKSpriteNode {
                 EnemyBulletCollisionWithPerson((firstNode),
-                                               Person: (secondNode))
+                                               EnemyBullet: (secondNode))
+            }
+            
+        }
+        else if ((firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet) ||
+            (firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player)){
+            
+            if let firstNode = firstBody.node as? SKSpriteNode,
+                secondNode = secondBody .node as? SKSpriteNode {
+                EnemyBulletCollisionWithPerson((firstNode),
+                                               EnemyBullet: (secondNode))
             }
             
         }
@@ -303,7 +321,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         ScoreLbl.removeFromSuperview()
     }
     
-    func EnemyBulletCollisionWithPerson(EnemyBullet: SKSpriteNode, Person: SKSpriteNode){
+    /* This function is not being called because no collision detection happens */
+    func EnemyBulletCollisionWithPerson(Person: SKSpriteNode, EnemyBullet: SKSpriteNode){
         
         
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
@@ -323,7 +342,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             gameMusic = nil
         }
         
-        EnemyBullet.removeFromParent()
+//        EnemyBullet.removeFromParent()
         Person.removeFromParent()
         let reveal = SKTransition.crossFadeWithDuration(1.0)
         let gameOver = EndScene(size: self.size)
@@ -395,14 +414,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        EnemyBullet.zPosition = -0.5
         
         EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
-        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.Player
-        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.EnemyBullet
+        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.EnemyBullet
+        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.Player
         EnemyBullet.physicsBody?.affectedByGravity = false
         EnemyBullet.physicsBody?.dynamic = false
         EnemyBullet.position = enemyPos
         
 //        targetSprite.parent?.addChild(EnemyBullet)
-        self.addChild(EnemyBullet)
+        
+        SlowEnemy.parent?.addChild(EnemyBullet)
         let action = SKAction.moveTo(CGPoint(x: Player.position.x, y: Player.position.y), duration: 5)
         let actionDone = SKAction.removeFromParent()
         EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
