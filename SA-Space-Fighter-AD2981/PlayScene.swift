@@ -69,6 +69,22 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         addChild(pointDisplay)
     }
     
+    func bossApproachingWarning(){
+        let bossWarning        = SKLabelNode(fontNamed: "courier-bold")
+        
+        bossWarning.text       = "WARNING! BOSS APPROACHES!"
+        bossWarning.fontSize   = 50;
+        bossWarning.fontColor  = UIColor.redColor()
+        bossWarning.zPosition  = 3;
+        bossWarning.position   = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(0.5),SKAction.fadeOutWithDuration(0.5)])
+        bossWarning.runAction(SKAction.repeatAction(animatePoint, count: 2))
+        
+        addChild(bossWarning)
+        runAction(SKAction.playSoundFileNamed("alarm1.caf", waitForCompletion: false))
+
+    }
+    
     override func didMoveToView(view: SKView) {
         
         /* Add game music */
@@ -179,11 +195,41 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        PlayScene.delay(3.5) {
 //            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: true)
 //        }
-//        
-        PlayScene.delay(21.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+//
+        PlayScene.delay(24.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFour), userInfo: nil, repeats: false)
         }
 
+        PlayScene.delay(24.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFive), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(26.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(26.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(28.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(32) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(32) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(39) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(46.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
+        }
+        
         
 
         /* Add score counter */
@@ -466,15 +512,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
         
         let rand1 = Double(arc4random())/Double(UInt32.max) + 0.5
-        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
+//        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
 
         PlayScene.delay(rand1){
             self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
         }
         
-        PlayScene.delay(rand2){
-            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
-        }
+//        PlayScene.delay(rand2){
+//            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
+//        }
         
     }
     
@@ -611,7 +657,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         let path = createBezierPath()
         
-        for i in 0..<4 {
+        for i in 0..<7 {
             let value = Double(i)
             PlayScene.delay(value/3){
                 self.spawnEnemyScout(path, PathTime: 5)
@@ -619,6 +665,76 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
+    
+    
+    func leftEnemyFlightThree(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: -50, y: 1800))
+            
+            path.addLineToPoint(CGPoint(x: 1100, y: 450))
+            
+            path.addLineToPoint(CGPoint(x: 1150, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<3 {
+            let value = Double(i)
+            PlayScene.delay(value/3){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    
+    func rightEnemyFlightFour(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: 1100, y: 1600))
+            
+            path.addLineToPoint(CGPoint(x: -50, y: 250))
+            
+            path.addLineToPoint(CGPoint(x: -150, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<3 {
+            let value = Double(i)
+            PlayScene.delay(value/3){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    func rightEnemyFlightFive(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x: 1100, y: 1800))
+            
+            path.addLineToPoint(CGPoint(x: -50, y: 450))
+            
+            path.addLineToPoint(CGPoint(x: -150, y: 3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<3 {
+            let value = Double(i)
+            PlayScene.delay(value/3){
+                self.spawnEnemyScout(path, PathTime: 5)
+            }
+        }
+        
+    }
+    
     
     
     
@@ -657,6 +773,46 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             path.addLineToPoint(CGPoint(x: -200, y: 3000))
             return path
         }
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 20)
+            }
+        }
+    }
+    
+    func rightSlowEnemyFlightTwo(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 1100, y: 1500))
+            path.addLineToPoint(CGPoint(x: -50, y: 1500))
+            path.addLineToPoint(CGPoint(x: -200, y: 3000))
+            return path
+        }
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 20)
+            }
+        }
+    }
+    
+    func leftSlowEnemyFlightTwo(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 0.5, y: 1800))
+            path.addLineToPoint(CGPoint(x: 1300, y: 1800))
+            path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
         
         let path = createBezierPath()
         
@@ -669,6 +825,48 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func leftSlowEnemyFlightThree(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 400, y: 2000))
+            path.addLineToPoint(CGPoint(x: 400, y: -50))
+            path.addLineToPoint(CGPoint(x: 400, y: -3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 15)
+            }
+        }
+        
+    }
+    func rightSlowEnemyFlightThree(){
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 800, y: 2000))
+            path.addLineToPoint(CGPoint(x: 800, y: -50))
+            path.addLineToPoint(CGPoint(x: 800, y: -3000))
+            return path
+        }
+        
+        let path = createBezierPath()
+        
+        for i in 0..<1 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnSlowEnemy(path, PathTime: 15)
+            }
+        }
+        
+    }
     
     
     func SpawnRandomEnemies(){
