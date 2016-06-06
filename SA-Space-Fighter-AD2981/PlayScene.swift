@@ -15,7 +15,7 @@ import AVFoundation
 struct PhysicsCatagory {
     static let Enemy        : UInt32    = 1
     static let Bullet       : UInt32    = 2
-    static let Player       : UInt32    = 3 
+    static let Player       : UInt32    = 3
     static let EnemyBullet  : UInt32    = 4
     static let SlowEnemy    : UInt32    = 5
 }
@@ -40,8 +40,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let enemyScoutPoints    = 20
     let slowEnemyPoints     = 25
     var gameMusic           : AVAudioPlayer!
+    var shootSound          : AVAudioPlayer!
     var bulletSound         : AVAudioPlayer!
-    var explosionSound      : AVAudioPlayer!
     var _dLastShootTime     : CFTimeInterval = 1
 
     
@@ -209,29 +209,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 secondNode = secondBody.node as? SKSpriteNode {
                 CollisionWithBullet((firstNode),
                                     Bullet: (secondNode))
-            }
-            
-        }
-        
-        /* This collision detection statement isnt detecting any collision */
-        
-        else if ((firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet) ||
-            (firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player)){
-            
-            if let firstNode = firstBody.node as? SKSpriteNode,
-                secondNode = secondBody .node as? SKSpriteNode {
-                EnemyBulletCollisionWithPerson((firstNode),
-                                               EnemyBullet: (secondNode))
-            }
-            
-        }
-        else if ((firstBody.categoryBitMask == PhysicsCatagory.Player) && (secondBody.categoryBitMask == PhysicsCatagory.EnemyBullet) ||
-            (firstBody.categoryBitMask == PhysicsCatagory.EnemyBullet) && (secondBody.categoryBitMask == PhysicsCatagory.Player)){
-            
-            if let firstNode = firstBody.node as? SKSpriteNode,
-                secondNode = secondBody .node as? SKSpriteNode {
-                EnemyBulletCollisionWithPerson((firstNode),
-                                               EnemyBullet: (secondNode))
             }
             
         }
@@ -411,7 +388,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         EnemyBullet.color = UIColor.redColor()
         EnemyBullet.colorBlendFactor = 0.8
         EnemyBullet.setScale(5)
-//        EnemyBullet.zPosition = -0.5
+        EnemyBullet.zPosition = -0.1
         
         EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
         EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.EnemyBullet
@@ -420,9 +397,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         EnemyBullet.physicsBody?.dynamic = false
         EnemyBullet.position = enemyPos
         
-//        targetSprite.parent?.addChild(EnemyBullet)
+//        SlowEnemy.parent?.addChild(EnemyBullet) // is this something necessary?
+        runAction(SKAction.playSoundFileNamed("zap2.caf", waitForCompletion: false))
         
-        SlowEnemy.parent?.addChild(EnemyBullet)
+        self.addChild(EnemyBullet)
         let action = SKAction.moveTo(CGPoint(x: Player.position.x, y: Player.position.y), duration: 5)
         let actionDone = SKAction.removeFromParent()
         EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
