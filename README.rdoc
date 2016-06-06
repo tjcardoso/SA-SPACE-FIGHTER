@@ -1,9 +1,9 @@
 SA Space Fighter AD2981
 
+Created May 27, 2016
 This is a vertically scrolling 2D space shooter built in Swift for iOS.
 
-I used the Archetapp "Space Shooter" tutorial to help myself learn the basics and to get a starting point for the game.
-Link: https://www.youtube.com/watch?v=CeW6SCQv--o
+I used the Archetapp “Space Shooter” tutorial to help myself learn the basics and to get a starting point for the game. Link: www.youtube.com/watch?v=CeW6SCQv–o
 
 
 It has not been pushed to the app store and is currently in development.
