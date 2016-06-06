@@ -16,7 +16,7 @@ struct PhysicsCatagory {
     static let Enemy        : UInt32    = 1
     static let Bullet       : UInt32    = 2
     static let Player       : UInt32    = 3
-    static let EnemyBullet  : UInt32    = 4
+    static let EnemyBullet  : UInt32    = 11
     static let SlowEnemy    : UInt32    = 5
 }
 
@@ -147,43 +147,43 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
 
-//        PlayScene.delay(4.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//        PlayScene.delay(8.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//     
-//        PlayScene.delay(12) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(17) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
+        PlayScene.delay(4.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(8.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+     
+        PlayScene.delay(12) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
+        }
         
-        
-//        PlayScene.delay(17.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//        
-//        
-//        PlayScene.delay(17.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-        PlayScene.delay(3.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: true)
+        PlayScene.delay(17) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
         }
         
         
-        PlayScene.delay(3.5) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: true)
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
         }
-//        
-//        PlayScene.delay(21.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+        
+        
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+//        PlayScene.delay(3.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: true)
 //        }
 //        
+//        
+//        PlayScene.delay(3.5) {
+//            _ = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: true)
+//        }
+//        
+        PlayScene.delay(21.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+
         
 
         /* Add score counter */
@@ -384,26 +384,25 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func shoot(enemyPos: CGPoint) {
-        let EnemyBullet = SKSpriteNode(imageNamed: "enemyBullet")
-        EnemyBullet.color = UIColor.redColor()
-        EnemyBullet.colorBlendFactor = 0.8
-        EnemyBullet.setScale(5)
-        EnemyBullet.zPosition = -0.1
-        
-        EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
-        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.EnemyBullet
-        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.Player
-        EnemyBullet.physicsBody?.affectedByGravity = false
-        EnemyBullet.physicsBody?.dynamic = false
-        EnemyBullet.position = enemyPos
-        
-//        SlowEnemy.parent?.addChild(EnemyBullet) // is this something necessary?
-        runAction(SKAction.playSoundFileNamed("zap2.caf", waitForCompletion: false))
-        
-        self.addChild(EnemyBullet)
-        let action = SKAction.moveTo(CGPoint(x: Player.position.x, y: Player.position.y), duration: 5)
+
+        let Enemy = SKSpriteNode(imageNamed: "bullet")
+        Enemy.setScale(4)
+        Enemy.color = UIColor.greenColor()
+        Enemy.colorBlendFactor = 0.8
+        Enemy.position = enemyPos
+        Enemy.physicsBody = SKPhysicsBody(circleOfRadius: Enemy.size.width / 100)
+        Enemy.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+        Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+        Enemy.physicsBody?.collisionBitMask = 0
+        Enemy.physicsBody?.affectedByGravity = false
+        Enemy.physicsBody?.dynamic = true
+        Enemy.zPosition = -0.1
+        let action = SKAction.moveToY(-70, duration: 3.0)
         let actionDone = SKAction.removeFromParent()
-        EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
+        Enemy.runAction(SKAction.sequence([action, actionDone]))
+        runAction(SKAction.playSoundFileNamed("zap2.caf", waitForCompletion: false))
+
+        self.addChild(Enemy)
     
     }
 
@@ -441,7 +440,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Enemy.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
         Enemy.physicsBody?.affectedByGravity = false
         Enemy.physicsBody?.dynamic = true
-//        Enemy.setScale(1.5)
         let BezierPath = path
         let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: true, duration: PathTime)
         
@@ -465,12 +463,16 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         SlowEnemy.runAction(SKAction!(followCircle))
         self.addChild(SlowEnemy)
+
         
-        PlayScene.delay(1.5){
+        let rand1 = Double(arc4random())/Double(UInt32.max) + 0.5
+        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
+
+        PlayScene.delay(rand1){
             self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
         }
         
-        PlayScene.delay(3){
+        PlayScene.delay(rand2){
             self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
         }
         
