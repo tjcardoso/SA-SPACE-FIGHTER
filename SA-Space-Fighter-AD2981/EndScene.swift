@@ -27,6 +27,7 @@ class EndScene : SKScene {
     
     override func didMoveToView(view: SKView) {
         
+        
         func playEndMusic(){
             do {
                 self.endMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("menuMusic", ofType: "caf")!))

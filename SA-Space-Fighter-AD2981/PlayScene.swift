@@ -47,6 +47,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var playerHP            = MaxHealth
     var bossHP              = MaxHealth
     var gameMusic           : AVAudioPlayer!
+    var bossMusic           : AVAudioPlayer!
     var shootSound          : AVAudioPlayer!
     var bulletSound         : AVAudioPlayer!
     var _dLastShootTime     : CFTimeInterval = 1
@@ -84,11 +85,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func displayBossHealthPoints(amount: Int){
         let bossHealth        = SKLabelNode(fontNamed: "courier-bold")
         bossHealth.text       = "Boss HP%: \(amount)"
-        bossHealth.fontSize   = 40;
+        bossHealth.fontSize   = 45;
         bossHealth.fontColor  = UIColor.redColor()
         bossHealth.zPosition  = 3;
-        bossHealth.position   = CGPoint(x: 150, y: 1870)
-        let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(0.25),SKAction.fadeOutWithDuration(0.25)])
+        bossHealth.position   = CGPoint(x: 170, y: 1870)
+        let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(0.2),SKAction.fadeOutWithDuration(0.2)])
         bossHealth.runAction(SKAction.repeatAction(animatePoint, count: 1))
         addChild(bossHealth)
     }
@@ -187,66 +188,66 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
 
-//        PlayScene.delay(4.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//        PlayScene.delay(8.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//     
-//        PlayScene.delay(12) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(17) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//        
-//        
-//        PlayScene.delay(17.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//        
-//        
-//        PlayScene.delay(17.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
-//        }
-//
-//        PlayScene.delay(24.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFour), userInfo: nil, repeats: false)
-//        }
-//
-//        PlayScene.delay(24.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFive), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(26.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(26.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightTwo), userInfo: nil, repeats: false)
-//        }
-//        PlayScene.delay(28.5) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightThree), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(32) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightThree), userInfo: nil, repeats: false)
-//        }
-//        PlayScene.delay(32) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightThree), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(39) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
-//        }
-//        
-//        PlayScene.delay(47.1) {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
-//        }
+        PlayScene.delay(4.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(8.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+     
+        PlayScene.delay(12) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightOne), userInfo: nil, repeats: false)
+        }
         
-        PlayScene.delay(0.5) {
+        PlayScene.delay(17) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
+        
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+        
+        
+        PlayScene.delay(17.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightOne), userInfo: nil, repeats: false)
+        }
+
+        PlayScene.delay(24.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFour), userInfo: nil, repeats: false)
+        }
+
+        PlayScene.delay(24.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightFive), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(26.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(26.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightTwo), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(28.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(32) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        PlayScene.delay(32) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(39) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(47.1) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
+        }
+        
+        PlayScene.delay(53.5) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossPath), userInfo: nil, repeats: false)
         }
         
@@ -273,7 +274,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
             if ((bossBool == true) && (bossHP > 0)) {
                 print("boss minus hp")
-                bossHP = max(0, bossHP - 1)
+                bossHP = max(0, bossHP - 3)
                 displayBossHealthPoints(bossHP)
             }
             else if ((bossBool == true) && (bossHP <= 0)) {
@@ -364,9 +365,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        if gameMusic != nil {
-            gameMusic.stop()
-            gameMusic = nil
+        if bossMusic != nil {
+            bossMusic.stop()
+            bossMusic = nil
         }
         Bullet.removeFromParent()
 
@@ -405,6 +406,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             HighscoreDefault.setValue(Score, forKey: "Highscore")
             
         }
+
         
         if gameMusic != nil {
             gameMusic.stop()
@@ -461,6 +463,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             HighscoreDefault.setValue(Score, forKey: "Highscore")
             
         }
+//        if bossMusic != nil {
+//            bossMusic.stop()
+//            bossMusic = nil
+//        }
         
         if gameMusic != nil {
             gameMusic.stop()
@@ -601,9 +607,33 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func playBossMusic(){
+        
+        PlayScene.delay(0.5) {
+            do {
+                self.bossMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("bossMusic", ofType: "caf")!))
+                self.bossMusic?.prepareToPlay()
+                self.bossMusic?.volume = 0.5
+                self.bossMusic.play()
+                
+            } catch {
+                print("Error")
+            }
+        }
+        
+    }
     
     /* BOSS */
     func spawnBossEnemy(path: UIBezierPath, PathTime: Double) {
+        
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
+        }
+        print("")
+        PlayScene.delay(1){
+            self.playBossMusic()
+        }
         
         let Boss = SKSpriteNode(imageNamed: "boss")
         Boss.physicsBody = SKPhysicsBody(circleOfRadius: Boss.size.width / 2)
@@ -619,13 +649,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         Boss.runAction(SKAction!(followCircle))
         addChild(Boss)
-//        addChild(bossHealthBar)
-        
-//        bossHealthBar.position = CGPoint(
-//            x: Boss.position.x,
-//            y: Boss.position.y - Boss.size.height/2 - 10)
-//        
         bossBool = true
+        
         PlayScene.delay(4.5){
             self.spawnRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
             self.spawnLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
@@ -636,10 +661,44 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         PlayScene.delay(12.5){
             self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(16.5){
+            self.spawnRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
             self.spawnLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
         }
-       
-        
+        PlayScene.delay(20.5){
+            self.spawnRightMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(24.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(27.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(30.5){
+            self.spawnRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(33.5){
+            self.spawnRightMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(35.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(37.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(39.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnMiddleRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
     }
     
     /* Mini enemies that spawn from the boss */
@@ -1025,11 +1084,23 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             path.addLineToPoint(CGPoint(x: 150, y: 1600))
             path.addLineToPoint(CGPoint(x: 800, y: 1600))
             path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
             return path
         }
         
         let path = createBezierPath()
-        self.spawnBossEnemy(path, PathTime: 35)
+        self.spawnBossEnemy(path, PathTime: 55)
     }
     
     func spawnLeftMiniSlowEnemyPathOne(pos : CGPoint){
@@ -1114,10 +1185,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             return path
         }
         let path = createBezierPath()
-        for i in 0..<5 {
+        for i in 0..<6 {
             let value = Double(i)
             PlayScene.delay(value/4){
-                self.spawnMiniSlowEnemy(path, PathTime: 7)
+                self.spawnMiniSlowEnemy(path, PathTime: 8)
             }
         }
     }
@@ -1133,12 +1204,42 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             path.addCurveToPoint(CGPoint(x: 250, y: 200),
                                  controlPoint1: CGPoint(x: 250, y: 450),
                                  controlPoint2: CGPoint(x: 450, y: 200))
-            path.addCurveToPoint(CGPoint(x: 150, y: 900),
+            path.addCurveToPoint(CGPoint(x: 150, y: 1100),
                                  controlPoint1: CGPoint(x: 250, y: 400),
                                  controlPoint2: CGPoint(x: 50, y: 450))
 
             
-            path.addLineToPoint(CGPoint(x: 1500, y: 900))
+            path.addLineToPoint(CGPoint(x: 1500, y: 1100))
+            path.addLineToPoint(CGPoint(x: 1500, y: 3000))
+            return path
+        }
+        let path = createBezierPath()
+        for i in 0..<6 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnMiniSlowEnemy(path, PathTime: 8)
+            }
+        }
+    }
+    
+    func spawnMiddleRightMiniSlowEnemyPathOne(pos : CGPoint){
+        
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            path.moveToPoint(pos)
+            
+            path.addLineToPoint(CGPoint(x: 600, y: 700))
+            
+            path.addCurveToPoint(CGPoint(x: 850, y: 200),
+                                 controlPoint1: CGPoint(x: 850, y: 450),
+                                 controlPoint2: CGPoint(x: 650, y: 200))
+            path.addCurveToPoint(CGPoint(x: 950, y: 900),
+                                 controlPoint1: CGPoint(x: 850, y: 400),
+                                 controlPoint2: CGPoint(x: 1000, y: 450))
+            
+            
+            path.addLineToPoint(CGPoint(x: -100, y: 900))
+            path.addLineToPoint(CGPoint(x: -100, y: 3000))
             return path
         }
         let path = createBezierPath()
