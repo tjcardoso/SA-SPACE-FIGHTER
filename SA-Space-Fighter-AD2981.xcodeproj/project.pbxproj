@@ -45,6 +45,7 @@
 		BAE12C151D02A0DC00696072 /* explosion1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C121D02A0C300696072 /* explosion1.caf */; };
 		BAE12C161D02A0DC00696072 /* zap1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C131D02A0C300696072 /* zap1.caf */; };
 		BAE12C171D02A0DC00696072 /* zap2.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C141D02A0C300696072 /* zap2.caf */; };
+		BAF8DDE21D07833E00516BFA /* rocketFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = BAF8DDE11D07833E00516BFA /* rocketFire.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		BAE12C121D02A0C300696072 /* explosion1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion1.caf; sourceTree = "<group>"; };
 		BAE12C131D02A0C300696072 /* zap1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap1.caf; sourceTree = "<group>"; };
 		BAE12C141D02A0C300696072 /* zap2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap2.caf; sourceTree = "<group>"; };
+		BAF8DDE11D07833E00516BFA /* rocketFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rocketFire.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				BA7EF8961D024D5100E3785A /* rainParticle.sks */,
 				BA15A7421D076B2C00E40AD0 /* bossMusic.caf */,
 				BAE12C121D02A0C300696072 /* explosion1.caf */,
+				BAF8DDE11D07833E00516BFA /* rocketFire.sks */,
 				BA15A7441D076F9500E40AD0 /* level1.caf */,
 				BAE12C131D02A0C300696072 /* zap1.caf */,
 				BA13B1B41D060409002D1180 /* alarm1.caf */,
@@ -329,6 +332,7 @@
 				BA7EF89C1D024D6600E3785A /* gameMusic.caf in Resources */,
 				BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */,
 				BA7EF89D1D024D6600E3785A /* spark.png in Resources */,
+				BAF8DDE21D07833E00516BFA /* rocketFire.sks in Resources */,
 				BA2E00C41CFA25C300ADB82E /* darkbg.jpg in Resources */,
 				BA7EF8971D024D5100E3785A /* rainParticle.sks in Resources */,
 				BA2F150C1CF8B96800BE254F /* Assets.xcassets in Resources */,

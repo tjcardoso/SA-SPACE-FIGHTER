@@ -52,7 +52,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var bulletSound         : AVAudioPlayer!
     var _dLastShootTime     : CFTimeInterval = 1
     var bossBool            : Bool = false
-    
+    var rocketTrail         = SKEmitterNode(fileNamed: "rocketFire.sks")
+
 
     
     /* Create at delay function */
@@ -167,9 +168,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Player.physicsBody?.contactTestBitMask = PhysicsCatagory.Enemy
         Player.physicsBody?.dynamic = false
         self.addChild(Player)
-
+        rocketTrail!.position = CGPointMake(0, -10.0);
+        rocketTrail!.setScale(2)
+        rocketTrail!.targetNode = self.scene;
+        Player.addChild(rocketTrail!)
         
-        /* Bullet and Enemy Creation Timer delay */
 
         /*
         **********************
@@ -273,12 +276,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy))){
 
             if ((bossBool == true) && (bossHP > 0)) {
-                print("boss minus hp")
                 bossHP = max(0, bossHP - 3)
                 displayBossHealthPoints(bossHP)
             }
             else if ((bossBool == true) && (bossHP <= 0)) {
-                print("bool true, hp less than 0")
                 if let firstNode = firstBody.node as? SKSpriteNode,
                     secondNode = secondBody.node as? SKSpriteNode {
                     BossDefeated((firstNode),
@@ -286,7 +287,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
             else if (bossBool == false) {
-                print("bool false")
 
                 if let firstNode = firstBody.node as? SKSpriteNode,
                     secondNode = secondBody.node as? SKSpriteNode {
@@ -346,13 +346,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func BossCollisionWithBullet(Bullet: SKSpriteNode){
         Bullet.removeFromParent()
-        print("boss hit method")
         
     }
     
     func BossDefeated(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
         runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
-        print("boss defeated method")
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         ScoreDefault.setValue(Score, forKey: "Score")
         ScoreDefault.synchronize()
@@ -608,7 +606,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func playBossMusic(){
-        
         PlayScene.delay(0.5) {
             do {
                 self.bossMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("bossMusic", ofType: "caf")!))
@@ -625,15 +622,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     /* BOSS */
     func spawnBossEnemy(path: UIBezierPath, PathTime: Double) {
-        
-        if gameMusic != nil {
-            gameMusic.stop()
-            gameMusic = nil
-        }
-        print("")
-        PlayScene.delay(1){
-            self.playBossMusic()
-        }
         
         let Boss = SKSpriteNode(imageNamed: "boss")
         Boss.physicsBody = SKPhysicsBody(circleOfRadius: Boss.size.width / 2)
@@ -1292,10 +1280,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             let actionX = SKAction.moveToX(location.x, duration: 0.2)
             actionX.timingMode = .EaseInEaseOut
             Player.runAction(actionX)
+
+
         }
-        
-        
-        
         
     }
     
@@ -1305,7 +1292,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             Player.position.x = location.x
             Player.position.y = location.y + 120
-            
+
             
         }
         
@@ -1314,10 +1301,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-//        if currentTime - _dLastShootTime >= 1 {
-//            shoot(Player)
-//            _dLastShootTime=currentTime
-//        }
         
         if Player.position.x < 100 {
             Player.position.x = 100
