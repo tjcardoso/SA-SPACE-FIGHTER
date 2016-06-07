@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SA-Space-Fighter-AD2981/PlayScene.swift"
-            timestampString = "487012588.914966"
+            timestampString = "487015572.825361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
             landmarkName = "didBeginContact(_:)"
             landmarkType = "5">
          </BreakpointContent>

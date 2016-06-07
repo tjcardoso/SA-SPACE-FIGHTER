@@ -96,7 +96,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func bossApproachingWarning(){
         let bossWarning        = SKLabelNode(fontNamed: "courier-bold")
         
-        bossWarning.text       = "WARNING! BOSS APPROACHES!"
+        bossWarning.text       = "WARNING! Enemy Carrier Approaches!"
         bossWarning.fontSize   = 50;
         bossWarning.fontColor  = UIColor.redColor()
         bossWarning.zPosition  = 3;
@@ -251,6 +251,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
 
+        
+
         /* Add score counter */
         ScoreLbl.text  = "\(Score)"
         ScoreLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
@@ -271,7 +273,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
             if ((bossBool == true) && (bossHP > 0)) {
                 print("boss minus hp")
-                bossHP = max(0, bossHP - 3)
+                bossHP = max(0, bossHP - 1)
                 displayBossHealthPoints(bossHP)
             }
             else if ((bossBool == true) && (bossHP <= 0)) {
@@ -624,17 +626,19 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //            y: Boss.position.y - Boss.size.height/2 - 10)
 //        
         bossBool = true
-        
-//        let rand1 = Double(arc4random())/Double(UInt32.max) + 0.5
-        //        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
-        
-//        PlayScene.delay(rand1){
-//            self.shoot(CGPointMake(Boss.position.x, Boss.position.y))
-//        }
-        
-        //        PlayScene.delay(rand2){
-        //            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
-        //        }
+        PlayScene.delay(4.5){
+            self.spawnRightMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(8.5){
+            self.spawnRightMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathTwo(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+        PlayScene.delay(12.5){
+            self.spawnMiddleLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+            self.spawnLeftMiniSlowEnemyPathOne(CGPointMake(Boss.position.x, Boss.position.y))
+        }
+       
         
     }
     
@@ -1009,49 +1013,143 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             let path = UIBezierPath()
             
-            path.moveToPoint(CGPoint(x: 510, y: 2300))
-            path.addLineToPoint(CGPoint(x: 510, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-
+            path.moveToPoint(CGPoint(x: 590, y: 2500))
+            path.addLineToPoint(CGPoint(x: 590, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
+            path.addLineToPoint(CGPoint(x: 800, y: 1600))
+            path.addLineToPoint(CGPoint(x: 150, y: 1600))
             return path
         }
         
         let path = createBezierPath()
-        self.spawnBossEnemy(path, PathTime: 28)
+        self.spawnBossEnemy(path, PathTime: 35)
     }
     
-    func spawnLeftMiniSlowEnemies(){
+    func spawnLeftMiniSlowEnemyPathOne(pos : CGPoint){
         func createBezierPath() -> UIBezierPath {
-            
             let path = UIBezierPath()
-            
-            path.moveToPoint(CGPoint(x: 510, y: 2300))
-            path.addLineToPoint(CGPoint(x: 510, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-            path.addLineToPoint(CGPoint(x: 850, y: 1500))
-            path.addLineToPoint(CGPoint(x: 150, y: 1500))
-            
+            path.moveToPoint(pos)
+            path.addCurveToPoint(CGPoint(x: 150, y: 1500),
+                                 controlPoint1: CGPoint(x: 300, y: 1200),
+                                 controlPoint2: CGPoint(x: 300, y: 1800))
+            path.addLineToPoint(CGPoint(x: 400, y: -150))
+            path.addLineToPoint(CGPoint(x: -150, y: -150))
+            path.addLineToPoint(CGPoint(x: -150, y: 3000))
             return path
         }
-        
         let path = createBezierPath()
-        
         for i in 0..<5 {
             let value = Double(i)
             PlayScene.delay(value/4){
-                self.spawnMiniSlowEnemy(path, PathTime: 15)
+                self.spawnMiniSlowEnemy(path, PathTime: 7)
             }
         }
-        
     }
+    
+    func spawnRightMiniSlowEnemyPathOne(pos : CGPoint){
+        
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            path.moveToPoint(pos)
+            
+            path.addCurveToPoint(CGPoint(x: 900, y: 1500),
+                                 controlPoint1: CGPoint(x: 800, y: 1200),
+                                 controlPoint2: CGPoint(x: 800, y: 1800))
+            path.addLineToPoint(CGPoint(x: 600, y: -150))
+            
+            path.addLineToPoint(CGPoint(x: 1300, y: -150))
+            path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
+        let path = createBezierPath()
+        for i in 0..<5 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnMiniSlowEnemy(path, PathTime: 7)
+            }
+        }
+    }
+    
+    func spawnLeftMiniSlowEnemyPathTwo(pos : CGPoint){
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            path.moveToPoint(pos)
+            path.addCurveToPoint(CGPoint(x: 150, y: 1500),
+                                 controlPoint1: CGPoint(x: 300, y: 1200),
+                                 controlPoint2: CGPoint(x: 300, y: 1800))
+            path.addLineToPoint(CGPoint(x: 200, y: -150))
+            path.addLineToPoint(CGPoint(x: -150, y: -150))
+            path.addLineToPoint(CGPoint(x: -150, y: 3000))
+            return path
+        }
+        let path = createBezierPath()
+        for i in 0..<5 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnMiniSlowEnemy(path, PathTime: 7)
+            }
+        }
+    }
+    
+    func spawnRightMiniSlowEnemyPathTwo(pos : CGPoint){
+        
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            path.moveToPoint(pos)
+            
+            path.addCurveToPoint(CGPoint(x: 900, y: 1500),
+                                 controlPoint1: CGPoint(x: 800, y: 1200),
+                                 controlPoint2: CGPoint(x: 800, y: 1800))
+            path.addLineToPoint(CGPoint(x: 800, y: -150))
+            
+            path.addLineToPoint(CGPoint(x: 1300, y: -150))
+            path.addLineToPoint(CGPoint(x: 1300, y: 3000))
+            return path
+        }
+        let path = createBezierPath()
+        for i in 0..<5 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnMiniSlowEnemy(path, PathTime: 7)
+            }
+        }
+    }
+    
+    func spawnMiddleLeftMiniSlowEnemyPathOne(pos : CGPoint){
+        
+        func createBezierPath() -> UIBezierPath {
+            let path = UIBezierPath()
+            path.moveToPoint(pos)
+            
+            path.addLineToPoint(CGPoint(x: 450, y: 700))
+            
+            path.addCurveToPoint(CGPoint(x: 250, y: 200),
+                                 controlPoint1: CGPoint(x: 250, y: 450),
+                                 controlPoint2: CGPoint(x: 450, y: 200))
+            path.addCurveToPoint(CGPoint(x: 150, y: 900),
+                                 controlPoint1: CGPoint(x: 250, y: 400),
+                                 controlPoint2: CGPoint(x: 50, y: 450))
+
+            
+            path.addLineToPoint(CGPoint(x: 1500, y: 900))
+            return path
+        }
+        let path = createBezierPath()
+        for i in 0..<5 {
+            let value = Double(i)
+            PlayScene.delay(value/4){
+                self.spawnMiniSlowEnemy(path, PathTime: 7)
+            }
+        }
+    }
+    
     
     func SpawnRandomEnemies(){
     //        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
