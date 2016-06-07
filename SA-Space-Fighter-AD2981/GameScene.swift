@@ -33,7 +33,7 @@ class GameScene: SKScene {
         }
         
         func addPlayButton(){
-            playButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            playButton.position = CGPointMake(self.size.width / 2, self.size.height / 4)
             playButton.xScale = 0.6
             playButton.yScale = 0.6
             playButton.zPosition = 1.0

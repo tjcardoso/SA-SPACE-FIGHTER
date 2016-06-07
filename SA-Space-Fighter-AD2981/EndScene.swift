@@ -48,7 +48,7 @@ class EndScene : SKScene {
         }
         
         func addRestartButton(){
-            restartButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            restartButton.position = CGPointMake(self.size.width / 2, self.size.height / 4)
             restartButton.xScale = 0.6
             restartButton.yScale = 0.6
             restartButton.zPosition = 1.0
