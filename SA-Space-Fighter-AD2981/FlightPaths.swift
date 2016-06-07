@@ -2,7 +2,7 @@
 //  EnemyFlightCoordinates.swift
 //  SA-Space-Fighter-AD2981
 //
-//  Created by Crystal on 2016-06-03.
+//  Created by Todd Cardoso on 2016-06-03.
 //  Copyright © 2016 TJC. All rights reserved.
 //
 

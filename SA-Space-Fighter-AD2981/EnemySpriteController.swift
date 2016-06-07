@@ -2,7 +2,7 @@
 //////  EnemySpriteController.swift
 //////  SA-Space-Fighter-AD2981
 //////
-//////  Created by Crystal on 2016-05-31.
+//////  Created by Todd Cardoso on 2016-05-31.
 //////  Copyright © 2016 TJC. All rights reserved.
 //////
 //

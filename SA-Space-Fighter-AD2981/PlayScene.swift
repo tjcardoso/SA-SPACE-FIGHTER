@@ -10,6 +10,7 @@
 import SpriteKit
 import UIKit
 import AVFoundation
+import CoreMotion
 
 
 struct PhysicsCatagory {
@@ -20,6 +21,9 @@ struct PhysicsCatagory {
     static let SlowEnemy    : UInt32    = 5
 }
 
+let MaxHealth        = 100
+let HealthBarWidth   : CGFloat = 40
+let HealthBarHeight  : CGFloat = 4
 
 
 
@@ -39,10 +43,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var bulletDelay         = Double()
     let enemyScoutPoints    = 20
     let slowEnemyPoints     = 25
+    let bossHealthBar       = SKSpriteNode()
+    var playerHP            = MaxHealth
+    var bossHP              = MaxHealth
     var gameMusic           : AVAudioPlayer!
     var shootSound          : AVAudioPlayer!
     var bulletSound         : AVAudioPlayer!
     var _dLastShootTime     : CFTimeInterval = 1
+    var bossBool            : Bool = false
+    
 
     
     /* Create at delay function */
@@ -55,6 +64,38 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             dispatch_get_main_queue(),
             closure
         )
+    }
+    
+    /* monitor boss health */
+    func updateHealthBar(node: SKSpriteNode, withHealthPoints hp: Int) {
+        
+        let barSize = CGSize(width: HealthBarWidth, height: HealthBarHeight);
+        
+        let fillColor = UIColor(red: 113.0/255, green: 202.0/255, blue: 53.0/255, alpha:1)
+        let borderColor = UIColor(red: 35.0/255, green: 28.0/255, blue: 40.0/255, alpha:1)
+        
+        // create drawing context
+        UIGraphicsBeginImageContextWithOptions(barSize, false, 0)
+        let context = UIGraphicsGetCurrentContext()
+        
+        // draw the outline for the health bar
+        borderColor.setStroke()
+        let borderRect = CGRect(origin: CGPointZero, size: barSize)
+        CGContextStrokeRectWithWidth(context, borderRect, 1)
+        
+        // draw the health bar with a colored rectangle
+        fillColor.setFill()
+        let barWidth = (barSize.width - 1) * CGFloat(hp) / CGFloat(MaxHealth)
+        let barRect = CGRect(x: 0.5, y: 0.5, width: barWidth, height: barSize.height - 1)
+        CGContextFillRect(context, barRect)
+        
+        // extract image
+        let spriteImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // set sprite texture and size
+        node.texture = SKTexture(image: spriteImage)
+        node.size = barSize
     }
     
     /* display enemy points upon enemy death */
@@ -82,7 +123,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(bossWarning)
         runAction(SKAction.playSoundFileNamed("alarm1.caf", waitForCompletion: false))
-
+        
     }
     
     override func didMoveToView(view: SKView) {
@@ -226,10 +267,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightThree), userInfo: nil, repeats: false)
         }
         
-        PlayScene.delay(47.5) {
+        PlayScene.delay(47.1) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
         }
         
+        PlayScene.delay(53.5) {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossPath), userInfo: nil, repeats: false)
+        }
         
 
         /* Add score counter */
@@ -251,12 +295,18 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         if (((firstBody.categoryBitMask == PhysicsCatagory.Enemy) && (secondBody.categoryBitMask == PhysicsCatagory.Bullet)) ||
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy))){
             
-            if let firstNode = firstBody.node as? SKSpriteNode,
-                secondNode = secondBody.node as? SKSpriteNode {
-                CollisionWithBullet((firstNode),
-                                    Bullet: (secondNode))
+            if ((bossBool == true) && (bossHP > 0)) {
+                print("boss hit1 - print")
+                bossHP = max(0, bossHP - 5)
+//                updateHealthBar(bossHealthBar, withHealthPoints: bossHP)
             }
-            
+            else if ((bossBool == true) && (bossHP <= 0)) {
+                    if let firstNode = firstBody.node as? SKSpriteNode,
+                        secondNode = secondBody.node as? SKSpriteNode {
+                        CollisionWithBullet((firstNode),
+                                            Bullet: (secondNode))
+                }
+            }
         }
         else if (((firstBody.categoryBitMask == PhysicsCatagory.SlowEnemy) && (secondBody.categoryBitMask == PhysicsCatagory.Bullet)) ||
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.SlowEnemy))){
@@ -290,7 +340,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
-        
+       
+
     }
     
     func CollisionWithBullet(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
@@ -303,6 +354,34 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Score += enemyScoutPoints
         
         ScoreLbl.text = "\(Score)"
+    }
+    
+    func BossDefeated(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
+        runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
+        
+        let ScoreDefault = NSUserDefaults.standardUserDefaults()
+        ScoreDefault.setValue(Score, forKey: "Score")
+        ScoreDefault.synchronize()
+        
+        
+        if (Score > Highscore){
+            
+            let HighscoreDefault = NSUserDefaults.standardUserDefaults()
+            HighscoreDefault.setValue(Score, forKey: "Highscore")
+            
+        }
+        
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
+        }
+        
+        removeAllChildren()
+        let reveal = SKTransition.crossFadeWithDuration(1.0)
+        let levelDone = CompleteScene(size: self.size)
+        self.view?.presentScene(levelDone, transition: reveal)
+        ScoreLbl.removeFromSuperview()
+    
     }
     
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
@@ -336,6 +415,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             gameMusic.stop()
             gameMusic = nil
         }
+        
         Enemy.removeFromParent()
         Person.removeFromParent()
         let reveal = SKTransition.crossFadeWithDuration(1.0)
@@ -521,6 +601,43 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 //        PlayScene.delay(rand2){
 //            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
 //        }
+        
+    }
+    
+    /* BOSS */
+    func spawnBossEnemy(path: UIBezierPath, PathTime: Double) {
+        
+        let Boss = SKSpriteNode(imageNamed: "boss")
+        Boss.physicsBody = SKPhysicsBody(circleOfRadius: Boss.size.width)
+        Boss.physicsBody?.categoryBitMask = PhysicsCatagory.Enemy
+        Boss.physicsBody?.contactTestBitMask = PhysicsCatagory.Bullet
+        Boss.physicsBody?.affectedByGravity = false
+        Boss.physicsBody?.collisionBitMask = 0
+        Boss.physicsBody?.dynamic = true
+        Boss.setScale(1)
+        let BezierPath = path
+        let followCircle = SKAction.followPath(BezierPath.CGPath, asOffset: true, orientToPath: false, duration: PathTime)
+        
+        Boss.runAction(SKAction!(followCircle))
+        addChild(Boss)
+        addChild(bossHealthBar)
+        
+        bossHealthBar.position = CGPoint(
+            x: Boss.position.x,
+            y: Boss.position.y - Boss.size.height/2 - 10)
+        
+        bossBool = true
+        
+//        let rand1 = Double(arc4random())/Double(UInt32.max) + 0.5
+        //        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
+        
+//        PlayScene.delay(rand1){
+//            self.shoot(CGPointMake(Boss.position.x, Boss.position.y))
+//        }
+        
+        //        PlayScene.delay(rand2){
+        //            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
+        //        }
         
     }
     
@@ -866,6 +983,27 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
+    }
+    
+    /* Boss Path */
+    
+    func bossPath() {
+        func createBezierPath() -> UIBezierPath {
+            
+            let path = UIBezierPath()
+            
+            path.moveToPoint(CGPoint(x: 510, y: 2300))
+            path.addLineToPoint(CGPoint(x: 510, y: 1500))
+            path.addLineToPoint(CGPoint(x: 850, y: 1500))
+            path.addLineToPoint(CGPoint(x: 150, y: 1500))
+            path.addLineToPoint(CGPoint(x: 850, y: 1500))
+            path.addLineToPoint(CGPoint(x: 150, y: 1500))
+
+            return path
+        }
+        
+        let path = createBezierPath()
+        self.spawnBossEnemy(path, PathTime: 30)
     }
     
     
