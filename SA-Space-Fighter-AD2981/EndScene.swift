@@ -22,10 +22,9 @@ class EndScene : SKScene {
     var HighScoreLbl    : UILabel!
     var endMusic        : AVAudioPlayer!
     
-    //    let backgroundImage = UIImageView(frame: UIScreen.mainScreen().bounds)
-    //    var RestartBtn : UIButton!
     
     override func didMoveToView(view: SKView) {
+        
         
         func playEndMusic(){
             do {
@@ -48,7 +47,7 @@ class EndScene : SKScene {
         }
         
         func addRestartButton(){
-            restartButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            restartButton.position = CGPointMake(self.size.width / 2, self.size.height / 4)
             restartButton.xScale = 0.6
             restartButton.yScale = 0.6
             restartButton.zPosition = 1.0
@@ -94,10 +93,6 @@ class EndScene : SKScene {
             let location = touch.locationInNode(self)
             
             if self.nodeAtPoint(location) == self.restartButton {
-                /* TODO:  Find out if the button and bgimage needs to be removed */
-                
-//                bgImage.removeFromParent()
-//                restartButton.removeFromParent()
                 
                 HighScoreLbl.removeFromSuperview()
                 ScoreLbl.removeFromSuperview()

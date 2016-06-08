@@ -41,24 +41,7 @@
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="156" y="120" width="60" height="51"/>
-                                </variation>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDs-do-h8K">
-                                <rect key="frame" x="-42" y="-21" width="42" height="21"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="AD2981">
-                                        <attributes>
-                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="47" name="MarkerFelt-Wide"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                                <size key="shadowOffset" width="0.0" height="0.0"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="104" y="256" width="184" height="57"/>
+                                    <rect key="frame" x="156" y="154" width="60" height="51"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBM-lk-Rj9">
@@ -75,7 +58,7 @@
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="30" y="186" width="313" height="62"/>
+                                    <rect key="frame" x="30" y="220" width="313" height="62"/>
                                 </variation>
                             </label>
                         </subviews>
@@ -84,7 +67,6 @@
                             <mask key="subviews">
                                 <exclude reference="XDK-tH-9C6"/>
                                 <exclude reference="ai5-cJ-6U8"/>
-                                <exclude reference="vDs-do-h8K"/>
                                 <exclude reference="aBM-lk-Rj9"/>
                             </mask>
                         </variation>
@@ -92,7 +74,6 @@
                             <mask key="subviews">
                                 <include reference="XDK-tH-9C6"/>
                                 <include reference="ai5-cJ-6U8"/>
-                                <include reference="vDs-do-h8K"/>
                                 <include reference="aBM-lk-Rj9"/>
                             </mask>
                         </variation>
