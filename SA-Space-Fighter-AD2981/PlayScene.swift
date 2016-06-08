@@ -29,32 +29,31 @@ let HealthBarHeight  : CGFloat = 4
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
+    let enemyScoutPoints    = 20
+    let slowEnemyPoints     = 25
     var Highscore           = Int()
     var Score               = Int()
+    var bulletDelay         = Double()
+    var ScoreLbl            = UILabel()
+    var playerHP            = MaxHealth
+    var bossHP              = MaxHealth
+    let bossHealthBar       = SKSpriteNode()
+    var playerBullet        = SKSpriteNode();
+    var bulletArray         = Array<SKTexture>();
+    let gameStartDelay      = SKAction.waitForDuration(3.0)
     var Player              = SKSpriteNode(imageNamed: "ship1")
     var Enemy               = SKSpriteNode(imageNamed: "ship2")
     var SlowEnemy           = SKSpriteNode(imageNamed: "ship3")
-    var EnemyBullet         = SKSpriteNode(imageNamed: "enemyBullet")
-    var ScoreLbl            = UILabel()
     let textureAtlas        = SKTextureAtlas(named:"bullet.atlas")
-    var bulletArray         = Array<SKTexture>();
-    var playerBullet        = SKSpriteNode();
-    let gameStartDelay      = SKAction.waitForDuration(3.0)
-    var bulletDelay         = Double()
-    let enemyScoutPoints    = 20
-    let slowEnemyPoints     = 25
-    let bossHealthBar       = SKSpriteNode()
-    var playerHP            = MaxHealth
-    var bossHP              = MaxHealth
+    var EnemyBullet         = SKSpriteNode(imageNamed: "enemyBullet")
+    var rocketTrail         = SKEmitterNode(fileNamed: "rocketFire.sks")
+
+    var bossBool            : Bool = false
     var gameMusic           : AVAudioPlayer!
     var bossMusic           : AVAudioPlayer!
     var shootSound          : AVAudioPlayer!
     var bulletSound         : AVAudioPlayer!
-    var _dLastShootTime     : CFTimeInterval = 1
-    var bossBool            : Bool = false
-    var rocketTrail         = SKEmitterNode(fileNamed: "rocketFire.sks")
-
-
+    
     
     /* Create at delay function */
     class func delay(delay: Double, closure: ()->()) {
@@ -112,7 +111,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func explosion(pos: CGPoint) {
-        let explosionNode = SKEmitterNode(fileNamed: "explosionParticle.sks")
+        let explosionNode               = SKEmitterNode(fileNamed: "explosionParticle.sks")
         explosionNode!.particlePosition = pos
         self.addChild(explosionNode!)
         self.runAction(SKAction.waitForDuration(0.2), completion: { explosionNode!.removeFromParent() })
@@ -148,7 +147,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         rainParticle.position = CGPointMake(self.size.width / 2,  self.size.height)
         rainParticle.particlePositionRange = CGVector(dx: frame.size.width, dy:frame.size.height)
         
-        rainParticle.name = "rainParticle"
+        rainParticle.name       = "rainParticle"
         rainParticle.targetNode = self.scene
         
         /* Setup Highscore counter in top left of game */
@@ -267,9 +266,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
 
         /* Add score counter */
-        ScoreLbl.text  = "\(Score)"
-        ScoreLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
-        ScoreLbl.textColor = UIColor.whiteColor()
+        ScoreLbl.text       = "\(Score)"
+        ScoreLbl            = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+        ScoreLbl.textColor  = UIColor.whiteColor()
         self.view?.addSubview(ScoreLbl)
         
     }
@@ -343,18 +342,19 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func CollisionWithBullet(Enemy: SKSpriteNode, Bullet:SKSpriteNode){
         runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
-        var pos = CGPoint()
-        pos = CGPointMake(Enemy.position.x + 70, Enemy.position.y - 70)
+        
+        var pos     = CGPoint()
+        pos         = CGPointMake(Enemy.position.x + 70, Enemy.position.y - 70)
         self.displayEnemyPoints(pos, amount: enemyScoutPoints)
-        var pos2 = CGPoint()
-        pos2 = CGPointMake(Enemy.position.x, Enemy.position.y)
+        
+        var pos2    = CGPoint()
+        pos2        = CGPointMake(Enemy.position.x, Enemy.position.y)
         explosion(pos2)
+        
         Enemy.removeFromParent()
         Bullet.removeFromParent()
-        
  
         Score += enemyScoutPoints
-        
         ScoreLbl.text = "\(Score)"
     }
     
@@ -371,12 +371,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
         if (Score > Highscore){
-            
             let HighscoreDefault = NSUserDefaults.standardUserDefaults()
             HighscoreDefault.setValue(Score, forKey: "Highscore")
-            
         }
-        
         
         if gameMusic != nil {
             gameMusic.stop()
@@ -396,35 +393,33 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func SlowEnemyCollisionWithBullet(SlowEnemy: SKSpriteNode, Bullet:SKSpriteNode){
         runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
-        var pos = CGPoint()
-        pos = CGPointMake(SlowEnemy.position.x + 70, SlowEnemy.position.y - 70)
+        
+        var pos     = CGPoint()
+        pos         = CGPointMake(SlowEnemy.position.x + 70, SlowEnemy.position.y - 70)
         self.displayEnemyPoints(pos, amount: slowEnemyPoints)
-        var pos2 = CGPoint()
-        pos2 = CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y)
+        
+        var pos2    = CGPoint()
+        pos2        = CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y)
         explosion(pos2)
+        
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
-        Score += slowEnemyPoints
         
+        Score += slowEnemyPoints
         ScoreLbl.text = "\(Score)"
     }
     
     func CollisionWithPerson(Enemy:SKSpriteNode, Person: SKSpriteNode){
-        
 
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         ScoreDefault.setValue(Score, forKey: "Score")
         ScoreDefault.synchronize()
         
-        
         if (Score > Highscore){
-            
             let HighscoreDefault = NSUserDefaults.standardUserDefaults()
             HighscoreDefault.setValue(Score, forKey: "Highscore")
-            
         }
 
-        
         if gameMusic != nil {
             gameMusic.stop()
             gameMusic = nil
@@ -448,10 +443,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
         if (Score > Highscore){
-            
             let HighscoreDefault = NSUserDefaults.standardUserDefaults()
             HighscoreDefault.setValue(Score, forKey: "Highscore")
-            
         }
         
         if gameMusic != nil {
@@ -459,7 +452,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             gameMusic = nil
         }
         
-//        EnemyBullet.removeFromParent()
         Person.removeFromParent()
         let reveal = SKTransition.crossFadeWithDuration(1.0)
         let gameOver = EndScene(size: self.size)
@@ -475,20 +467,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
         if (Score > Highscore){
-            
             let HighscoreDefault = NSUserDefaults.standardUserDefaults()
             HighscoreDefault.setValue(Score, forKey: "Highscore")
-            
         }
-//        if bossMusic != nil {
-//            bossMusic.stop()
-//            bossMusic = nil
-//        }
-        
+
         if gameMusic != nil {
             gameMusic.stop()
             gameMusic = nil
         }
+        
         SlowEnemy.removeFromParent()
         Person.removeFromParent()
         let reveal = SKTransition.crossFadeWithDuration(1.0)
@@ -503,9 +490,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         bulletArray.append(textureAtlas.textureNamed("bullet1"));
         bulletArray.append(textureAtlas.textureNamed("bullet2"));
         playerBullet = SKSpriteNode(texture:bulletArray[0]);
-        
         playerBullet.zPosition = -5
-        
         playerBullet.position = CGPointMake(Player.position.x, Player.position.y)
         bulletDelay = 0.8
         let action = SKAction.moveToY(self.size.height + 1000, duration: bulletDelay)
@@ -518,7 +503,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         playerBullet.physicsBody?.affectedByGravity = false
         playerBullet.physicsBody?.dynamic = false
         self.addChild(playerBullet)
-        
         
         let animateAction = SKAction.animateWithTextures(self.bulletArray, timePerFrame: 0.2)
         let repeatAction = SKAction.repeatActionForever(animateAction)
@@ -590,8 +574,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         PlayScene.delay(rand1){
             self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
         }
-        
-        
     }
     
     func playBossMusic(){
@@ -606,7 +588,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 print("Error")
             }
         }
-        
     }
     
     /* BOSS */
@@ -886,6 +867,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
+    
     func rightEnemyFlightFive(){
         func createBezierPath() -> UIBezierPath {
             
@@ -908,9 +890,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
-    
-    
-    
     
     /*  Slow Enemy flight paths
         ***********************  */
@@ -996,7 +975,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 self.spawnSlowEnemy(path, PathTime: 20)
             }
         }
-        
     }
     
     func leftSlowEnemyFlightThree(){
@@ -1020,6 +998,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
+    
     func rightSlowEnemyFlightThree(){
         func createBezierPath() -> UIBezierPath {
             
@@ -1039,7 +1018,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
                 self.spawnSlowEnemy(path, PathTime: 15)
             }
         }
-        
     }
     
     /* Boss Path */
@@ -1281,8 +1259,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             Player.position.x = location.x
             Player.position.y = location.y + 120
-
-            
         }
         
     }
