@@ -549,30 +549,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(Enemy)
     
     }
-
-//    func spawnEnemyBullets(){
-//        
-////        let EnemyBullet = SKSpriteNode(imageNamed: "enemyBullet")
-//        EnemyBullet.zPosition = -5
-//        
-//        EnemyBullet.position = CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y)
-//        bulletDelay = 0.8
-//        let playerPos = CGPointMake(Player.position.x, Player.position.y)
-//        let action = SKAction.moveTo(playerPos, duration: 5)
-//        let actionDone = SKAction.removeFromParent()
-//        EnemyBullet.runAction(SKAction.sequence([action, actionDone]))
-//        EnemyBullet.setScale(3)
-//        EnemyBullet.physicsBody = SKPhysicsBody(circleOfRadius: EnemyBullet.size.width)
-//        EnemyBullet.physicsBody?.categoryBitMask = PhysicsCatagory.Bullet2
-//        EnemyBullet.physicsBody?.contactTestBitMask = PhysicsCatagory.Player
-//        EnemyBullet.physicsBody?.affectedByGravity = false
-//        EnemyBullet.physicsBody?.dynamic = false
-//        self.addChild(EnemyBullet)
-////        
-////        self.EnemyBullet.runAction(repeatAction)
-//        
-//    }
-    
     
     func spawnEnemyScout(path: UIBezierPath, PathTime: Double) {
         
@@ -610,17 +586,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
         
         let rand1 = Double(arc4random())/Double(UInt32.max) + 0.5
-//        let rand2 = Double(arc4random())/Double(UInt32.max) + 2.3
 
         PlayScene.delay(rand1){
             self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
         }
         
-        
-        
-//        PlayScene.delay(rand2){
-//            self.shoot(CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y))
-//        }
         
     }
     
@@ -1259,7 +1229,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    func SpawnRandomEnemies(){
+    //    func SpawnRandomEnemies(){
     //        let Enemy = SKSpriteNode(imageNamed: "Enemy1")
     //
     ////        let MinValue = self.size.width / 8
@@ -1281,7 +1251,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     //        Enemy.runAction(SKAction.sequence([action, actionDone]))
     //       
     //        self.addChild(Enemy)
-    }
+    //    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
