@@ -29,8 +29,8 @@ let HealthBarHeight  : CGFloat = 4
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
-    let enemyScoutPoints    = 20
-    let slowEnemyPoints     = 25
+    let enemyScoutPoints    = 325
+    let slowEnemyPoints     = 515
     var Highscore           = Int()
     var Score               = Int()
     var bulletDelay         = Double()
@@ -258,7 +258,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
         }
         
-        PlayScene.delay(53.5) {
+        PlayScene.delay(53) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossPath), userInfo: nil, repeats: false)
         }
         
@@ -284,7 +284,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy))){
 
             if ((bossBool == true) && (bossHP > 0)) {
-                bossHP = max(0, bossHP - 3)
+                bossHP = max(0, bossHP - 2)
                 displayBossHealthPoints(bossHP)
             }
             else if ((bossBool == true) && (bossHP <= 0)) {
@@ -1015,7 +1015,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         for i in 0..<1 {
             let value = Double(i)
             PlayScene.delay(value/4){
-                self.spawnSlowEnemy(path, PathTime: 15)
+                self.spawnSlowEnemy(path, PathTime: 10)
             }
         }
     }

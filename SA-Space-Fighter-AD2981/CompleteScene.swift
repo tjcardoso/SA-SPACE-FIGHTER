@@ -93,9 +93,6 @@ class CompleteScene : SKScene {
         self.view?.addSubview(HighScoreLbl)
         
         NSLog("HighScore: \(Highscore)")
-        
-        
-        
     }
     
     
@@ -119,8 +116,5 @@ class CompleteScene : SKScene {
                 
             }
         }
-        
     }
-    
-    
 }
