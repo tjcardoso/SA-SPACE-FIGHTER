@@ -14,9 +14,12 @@ import AVFoundation
 
 class GameScene: SKScene {
 
-    let playButton  = SKSpriteNode(imageNamed: "startButton")
+    var banner      = SKSpriteNode(imageNamed: "menuIcon")
     var bgImage     = SKSpriteNode(imageNamed: "darkbg.jpg")
+    let playButton  = SKSpriteNode(imageNamed: "startButton")
+    var profileImageView =  UIImage(named:"menuIcon")
     var endMusic    : AVAudioPlayer!
+    
     
     override func didMoveToView(view: SKView) {
         
@@ -48,9 +51,17 @@ class GameScene: SKScene {
             self.addChild(bgImage)
         }
         
+        func addMenuIcon(){
+            banner.position = CGPointMake(self.size.width / 2, self.size.height / 1.5)
+            banner.setScale(3)
+            banner.zPosition = 1
+            self.addChild(banner)
+        }
+        
 
         playEndMusic()
         addBackgroundImage()
+        addMenuIcon()
         addPlayButton()
         
     }

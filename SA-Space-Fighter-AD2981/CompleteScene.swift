@@ -23,21 +23,30 @@ class CompleteScene : SKScene {
     var HighScoreLbl    : UILabel!
     var endMusic        : AVAudioPlayer!
     
-    //    let backgroundImage = UIImageView(frame: UIScreen.mainScreen().bounds)
-    //    var RestartBtn : UIButton!
-    
     override func didMoveToView(view: SKView) {
         
         func playEndMusic(){
             do {
                 self.endMusic =  try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("level1", ofType: "caf")!))
                 self.endMusic?.prepareToPlay()
-                self.endMusic?.volume = 0.8
+                self.endMusic?.volume = 0.5
                 self.endMusic.play()
                 
             } catch {
                 print("Error")
             }
+        }
+        
+        func addLevelCompleteText(){
+            let levelCompleteText        = SKLabelNode(fontNamed: "courier-bold")
+            levelCompleteText.text       = "LEVEL 1 COMPLETE"
+            levelCompleteText.fontColor  = UIColor.redColor()
+            levelCompleteText.fontSize   = 90;
+            levelCompleteText.zPosition  = 3;
+            levelCompleteText.position   = CGPoint(x: self.size.width / 2, y: self.size.height / 1.8)
+            let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(5)])
+            levelCompleteText.runAction(SKAction.repeatAction(animatePoint, count: 1))
+            addChild(levelCompleteText)
         }
         
         func addBackgroundImage(){
@@ -59,6 +68,7 @@ class CompleteScene : SKScene {
         playEndMusic()
         addBackgroundImage()
         addRestartButton()
+        addLevelCompleteText()
         
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         let Score = ScoreDefault.valueForKey("Score") as! NSInteger

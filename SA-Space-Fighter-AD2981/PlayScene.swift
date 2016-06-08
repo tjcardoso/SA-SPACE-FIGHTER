@@ -88,7 +88,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         bossHealth.fontSize   = 45;
         bossHealth.fontColor  = UIColor.redColor()
         bossHealth.zPosition  = 3;
-        bossHealth.position   = CGPoint(x: 170, y: 1870)
+        bossHealth.position   = CGPoint(x: 900, y: 1870)
         let animatePoint = SKAction.sequence([SKAction.fadeInWithDuration(0.2),SKAction.fadeOutWithDuration(0.2)])
         bossHealth.runAction(SKAction.repeatAction(animatePoint, count: 1))
         addChild(bossHealth)
