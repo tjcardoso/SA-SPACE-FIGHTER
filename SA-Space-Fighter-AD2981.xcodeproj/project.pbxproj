@@ -24,21 +24,17 @@
 		BA2F150F1CF8B96800BE254F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA2F150D1CF8B96800BE254F /* LaunchScreen.storyboard */; };
 		BA2F151A1CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15191CF8B96800BE254F /* SA_Space_Fighter_AD2981Tests.swift */; };
 		BA2F15251CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F15241CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift */; };
-		BA7EF8911D02346200E3785A /* FlightPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7EF8901D02346200E3785A /* FlightPaths.swift */; };
 		BA7EF8931D024CC700E3785A /* bullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8921D024CC700E3785A /* bullet.atlas */; };
 		BA7EF8951D024D2F00E3785A /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7EF8941D024D2F00E3785A /* EndScene.swift */; };
 		BA7EF8971D024D5100E3785A /* rainParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8961D024D5100E3785A /* rainParticle.sks */; };
 		BA7EF89B1D024D6600E3785A /* endscene-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8981D024D6600E3785A /* endscene-bg.jpg */; };
 		BA7EF89C1D024D6600E3785A /* gameMusic.caf in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8991D024D6600E3785A /* gameMusic.caf */; };
 		BA7EF89D1D024D6600E3785A /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF89A1D024D6600E3785A /* spark.png */; };
-		BA7F44011CFE18C400D2D09E /* EnemySpriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */; };
 		BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
 		BAE12C021D029D4D00696072 /* AppDelegate.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15001CF8B96800BE254F /* AppDelegate.swift */; };
 		BAE12C031D029D4D00696072 /* PlayScene.swift in Resources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
-		BAE12C041D029D4D00696072 /* FlightPaths.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8901D02346200E3785A /* FlightPaths.swift */; };
 		BAE12C051D029D4D00696072 /* GameScene.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15041CF8B96800BE254F /* GameScene.swift */; };
 		BAE12C061D029D4D00696072 /* GameViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15061CF8B96800BE254F /* GameViewController.swift */; };
-		BAE12C071D029D4D00696072 /* EnemySpriteController.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */; };
 		BAE12C081D029D4D00696072 /* EndScene.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8941D024D2F00E3785A /* EndScene.swift */; };
 		BAE12C091D029D4D00696072 /* gameMusic3.caf in Resources */ = {isa = PBXBuildFile; fileRef = BABC1B471D029C7400FBC64D /* gameMusic3.caf */; };
 		BAE12C0E1D029D4D00696072 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15261CF8B96800BE254F /* Info.plist */; };
@@ -46,6 +42,7 @@
 		BAE12C161D02A0DC00696072 /* zap1.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C131D02A0C300696072 /* zap1.caf */; };
 		BAE12C171D02A0DC00696072 /* zap2.caf in Resources */ = {isa = PBXBuildFile; fileRef = BAE12C141D02A0C300696072 /* zap2.caf */; };
 		BAF8DDE21D07833E00516BFA /* rocketFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = BAF8DDE11D07833E00516BFA /* rocketFire.sks */; };
+		BAF8DDE41D07906A00516BFA /* explosionParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = BAF8DDE31D07906A00516BFA /* explosionParticle.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,20 +85,19 @@
 		BA2F15201CF8B96800BE254F /* SA-Space-Fighter-AD2981UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SA-Space-Fighter-AD2981UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA2F15241CF8B96800BE254F /* SA_Space_Fighter_AD2981UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SA_Space_Fighter_AD2981UITests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BA2F15261CF8B96800BE254F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BA7EF8901D02346200E3785A /* FlightPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightPaths.swift; sourceTree = "<group>"; };
 		BA7EF8921D024CC700E3785A /* bullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = bullet.atlas; sourceTree = "<group>"; };
 		BA7EF8941D024D2F00E3785A /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndScene.swift; sourceTree = "<group>"; };
 		BA7EF8961D024D5100E3785A /* rainParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rainParticle.sks; sourceTree = "<group>"; };
 		BA7EF8981D024D6600E3785A /* endscene-bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "endscene-bg.jpg"; sourceTree = "<group>"; };
 		BA7EF8991D024D6600E3785A /* gameMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameMusic.caf; sourceTree = "<group>"; };
 		BA7EF89A1D024D6600E3785A /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
-		BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemySpriteController.swift; sourceTree = "<group>"; };
 		BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 		BABC1B471D029C7400FBC64D /* gameMusic3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameMusic3.caf; sourceTree = "<group>"; };
 		BAE12C121D02A0C300696072 /* explosion1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion1.caf; sourceTree = "<group>"; };
 		BAE12C131D02A0C300696072 /* zap1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap1.caf; sourceTree = "<group>"; };
 		BAE12C141D02A0C300696072 /* zap2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = zap2.caf; sourceTree = "<group>"; };
 		BAF8DDE11D07833E00516BFA /* rocketFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rocketFire.sks; sourceTree = "<group>"; };
+		BAF8DDE31D07906A00516BFA /* explosionParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = explosionParticle.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,16 +153,15 @@
 				BA2F15021CF8B96800BE254F /* GameScene.sks */,
 				BA28F04F1CFD25A300EC8925 /* PlayScene.sks */,
 				BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */,
-				BA7EF8901D02346200E3785A /* FlightPaths.swift */,
 				BA2F15041CF8B96800BE254F /* GameScene.swift */,
 				BA2F15061CF8B96800BE254F /* GameViewController.swift */,
-				BA7F44001CFE18C400D2D09E /* EnemySpriteController.swift */,
 				BA7EF8941D024D2F00E3785A /* EndScene.swift */,
 				BA15A73F1D0666FE00E40AD0 /* CompleteScene.swift */,
+				BAF8DDE31D07906A00516BFA /* explosionParticle.sks */,
 				BA7EF8961D024D5100E3785A /* rainParticle.sks */,
+				BAF8DDE11D07833E00516BFA /* rocketFire.sks */,
 				BA15A7421D076B2C00E40AD0 /* bossMusic.caf */,
 				BAE12C121D02A0C300696072 /* explosion1.caf */,
-				BAF8DDE11D07833E00516BFA /* rocketFire.sks */,
 				BA15A7441D076F9500E40AD0 /* level1.caf */,
 				BAE12C131D02A0C300696072 /* zap1.caf */,
 				BA13B1B41D060409002D1180 /* alarm1.caf */,
@@ -313,11 +308,9 @@
 				BA13B1B51D060423002D1180 /* alarm1.caf in Resources */,
 				BAE12C021D029D4D00696072 /* AppDelegate.swift in Resources */,
 				BAE12C031D029D4D00696072 /* PlayScene.swift in Resources */,
-				BAE12C041D029D4D00696072 /* FlightPaths.swift in Resources */,
 				BAE12C051D029D4D00696072 /* GameScene.swift in Resources */,
 				BAE12C061D029D4D00696072 /* GameViewController.swift in Resources */,
 				BA15A7411D072A2500E40AD0 /* CompleteScene.swift in Resources */,
-				BAE12C071D029D4D00696072 /* EnemySpriteController.swift in Resources */,
 				BAE12C081D029D4D00696072 /* EndScene.swift in Resources */,
 				BAE12C091D029D4D00696072 /* gameMusic3.caf in Resources */,
 				BAE12C0E1D029D4D00696072 /* Info.plist in Resources */,
@@ -327,6 +320,7 @@
 				BA2F15031CF8B96800BE254F /* GameScene.sks in Resources */,
 				BA28F0501CFD25A300EC8925 /* PlayScene.sks in Resources */,
 				BA2E00C61CFA270C00ADB82E /* menuMusic.caf in Resources */,
+				BAF8DDE41D07906A00516BFA /* explosionParticle.sks in Resources */,
 				BA7EF89B1D024D6600E3785A /* endscene-bg.jpg in Resources */,
 				BA7EF8931D024CC700E3785A /* bullet.atlas in Resources */,
 				BA7EF89C1D024D6600E3785A /* gameMusic.caf in Resources */,
@@ -367,8 +361,6 @@
 				BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */,
 				BA2F15071CF8B96800BE254F /* GameViewController.swift in Sources */,
 				BA2F15011CF8B96800BE254F /* AppDelegate.swift in Sources */,
-				BA7EF8911D02346200E3785A /* FlightPaths.swift in Sources */,
-				BA7F44011CFE18C400D2D09E /* EnemySpriteController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

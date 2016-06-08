@@ -111,6 +111,14 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func explosion(pos: CGPoint) {
+        let explosionNode = SKEmitterNode(fileNamed: "explosionParticle.sks")
+        explosionNode!.particlePosition = pos
+        self.addChild(explosionNode!)
+        self.runAction(SKAction.waitForDuration(0.2), completion: { explosionNode!.removeFromParent() })
+    }
+
+    
     override func didMoveToView(view: SKView) {
         
         /* Add game music */
@@ -130,6 +138,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         }
         playGameMusic()
+        
         
         
         /* Setup particle emitter to scene */
@@ -168,7 +177,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         Player.physicsBody?.contactTestBitMask = PhysicsCatagory.Enemy
         Player.physicsBody?.dynamic = false
         self.addChild(Player)
-        rocketTrail!.position = CGPointMake(0, -10.0);
+        rocketTrail!.position = CGPointMake(0, -15.0);
         rocketTrail!.setScale(2)
         rocketTrail!.targetNode = self.scene;
         Player.addChild(rocketTrail!)
@@ -337,8 +346,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         var pos = CGPoint()
         pos = CGPointMake(Enemy.position.x + 70, Enemy.position.y - 70)
         self.displayEnemyPoints(pos, amount: enemyScoutPoints)
+        var pos2 = CGPoint()
+        pos2 = CGPointMake(Enemy.position.x, Enemy.position.y)
+        explosion(pos2)
         Enemy.removeFromParent()
         Bullet.removeFromParent()
+        
+ 
         Score += enemyScoutPoints
         
         ScoreLbl.text = "\(Score)"
@@ -363,10 +377,12 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        if bossMusic != nil {
-            bossMusic.stop()
-            bossMusic = nil
+        
+        if gameMusic != nil {
+            gameMusic.stop()
+            gameMusic = nil
         }
+        
         Bullet.removeFromParent()
 
         removeAllChildren()
@@ -383,6 +399,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         var pos = CGPoint()
         pos = CGPointMake(SlowEnemy.position.x + 70, SlowEnemy.position.y - 70)
         self.displayEnemyPoints(pos, amount: slowEnemyPoints)
+        var pos2 = CGPoint()
+        pos2 = CGPointMake(SlowEnemy.position.x, SlowEnemy.position.y)
+        explosion(pos2)
         SlowEnemy.removeFromParent()
         Bullet.removeFromParent()
         Score += slowEnemyPoints
