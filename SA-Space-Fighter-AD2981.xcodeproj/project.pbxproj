@@ -30,6 +30,7 @@
 		BA7EF89B1D024D6600E3785A /* endscene-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8981D024D6600E3785A /* endscene-bg.jpg */; };
 		BA7EF89C1D024D6600E3785A /* gameMusic.caf in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF8991D024D6600E3785A /* gameMusic.caf */; };
 		BA7EF89D1D024D6600E3785A /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7EF89A1D024D6600E3785A /* spark.png */; };
+		BAA8738D1D08C2A7000C93BE /* bossExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = BAA8738C1D08C2A7000C93BE /* bossExplosion.sks */; };
 		BAB61A8E1CFD1F1C006C7025 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
 		BAE12C021D029D4D00696072 /* AppDelegate.swift in Resources */ = {isa = PBXBuildFile; fileRef = BA2F15001CF8B96800BE254F /* AppDelegate.swift */; };
 		BAE12C031D029D4D00696072 /* PlayScene.swift in Resources */ = {isa = PBXBuildFile; fileRef = BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */; };
@@ -91,6 +92,7 @@
 		BA7EF8981D024D6600E3785A /* endscene-bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "endscene-bg.jpg"; sourceTree = "<group>"; };
 		BA7EF8991D024D6600E3785A /* gameMusic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameMusic.caf; sourceTree = "<group>"; };
 		BA7EF89A1D024D6600E3785A /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		BAA8738C1D08C2A7000C93BE /* bossExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = bossExplosion.sks; sourceTree = "<group>"; };
 		BAB61A8D1CFD1F1C006C7025 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 		BABC1B471D029C7400FBC64D /* gameMusic3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameMusic3.caf; sourceTree = "<group>"; };
 		BAE12C121D02A0C300696072 /* explosion1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = explosion1.caf; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				BA7EF8941D024D2F00E3785A /* EndScene.swift */,
 				BA15A73F1D0666FE00E40AD0 /* CompleteScene.swift */,
 				BAF8DDE31D07906A00516BFA /* explosionParticle.sks */,
+				BAA8738C1D08C2A7000C93BE /* bossExplosion.sks */,
 				BA7EF8961D024D5100E3785A /* rainParticle.sks */,
 				BAF8DDE11D07833E00516BFA /* rocketFire.sks */,
 				BA15A7421D076B2C00E40AD0 /* bossMusic.caf */,
@@ -309,6 +312,7 @@
 				BAE12C021D029D4D00696072 /* AppDelegate.swift in Resources */,
 				BAE12C031D029D4D00696072 /* PlayScene.swift in Resources */,
 				BAE12C051D029D4D00696072 /* GameScene.swift in Resources */,
+				BAA8738D1D08C2A7000C93BE /* bossExplosion.sks in Resources */,
 				BAE12C061D029D4D00696072 /* GameViewController.swift in Resources */,
 				BA15A7411D072A2500E40AD0 /* CompleteScene.swift in Resources */,
 				BAE12C081D029D4D00696072 /* EndScene.swift in Resources */,

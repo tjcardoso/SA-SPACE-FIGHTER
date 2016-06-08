@@ -19,11 +19,7 @@ struct PhysicsCatagory {
     static let SlowEnemy    : UInt32    = 5
 }
 
-let MaxHealth        = 100
-let HealthBarWidth   : CGFloat = 40
-let HealthBarHeight  : CGFloat = 4
-
-
+let MaxHealth = 100
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
@@ -65,8 +61,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         )
     }
     
-  
-  
     /* display enemy points upon enemy death */
     func displayEnemyPoints(pos: CGPoint, amount: Int){
         let pointDisplay        = SKLabelNode(fontNamed: "courier-bold")
@@ -116,11 +110,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func bossExplosion(pos: CGPoint) {
-        let explosionNode               = SKEmitterNode(fileNamed: "explosionParticle.sks")
+        let explosionNode               = SKEmitterNode(fileNamed: "bossExplosion.sks")
         explosionNode!.particlePosition = pos
-        explosionNode!.setScale(4)
+        explosionNode!.setScale(1)
         self.addChild(explosionNode!)
-        self.runAction(SKAction.waitForDuration(0.2), completion: { explosionNode!.removeFromParent() })
+        self.runAction(SKAction.waitForDuration(0.5), completion: { explosionNode!.removeFromParent() })
     }
 
     
@@ -204,7 +198,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         PlayScene.delay(0.8){
             _ = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(PlayScene.SpawnBullets), userInfo: nil, repeats: true)
         }
-
+        
         PlayScene.delay(4.5) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightEnemyFlightTwo), userInfo: nil, repeats: false)
         }
@@ -264,7 +258,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossApproachingWarning), userInfo: nil, repeats: false)
         }
         
-        PlayScene.delay(53) {
+        PlayScene.delay(52.7) {
             _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.bossPath), userInfo: nil, repeats: false)
         }
         
@@ -376,7 +370,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         let ScoreDefault = NSUserDefaults.standardUserDefaults()
         ScoreDefault.setValue(Score, forKey: "Score")
         ScoreDefault.synchronize()
+        self.bossBool = false
         
+        bossExplosion(Enemy.position)
         
         if (Score > Highscore){
             let HighscoreDefault = NSUserDefaults.standardUserDefaults()
@@ -388,14 +384,25 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             gameMusic = nil
         }
         
+        
+        
         Bullet.removeFromParent()
-
-        removeAllChildren()
-        let reveal = SKTransition.crossFadeWithDuration(1.0)
-        let levelDone = CompleteScene(size: self.size)
-        self.view?.presentScene(levelDone, transition: reveal)
-        ScoreLbl.removeFromSuperview()
-        bossBool = false
+        Enemy.removeFromParent()
+    
+        PlayScene.delay(0.5){
+            self.removeAllChildren()
+            let reveal = SKTransition.crossFadeWithDuration(1.0)
+            let levelDone = CompleteScene(size: self.size)
+            self.view?.presentScene(levelDone, transition: reveal)
+            self.ScoreLbl.removeFromSuperview()
+        }
+        
+//        removeAllChildren()
+//        let reveal = SKTransition.crossFadeWithDuration(1.0)
+//        let levelDone = CompleteScene(size: self.size)
+//        self.view?.presentScene(levelDone, transition: reveal)
+//        ScoreLbl.removeFromSuperview()
+//        bossBool = false
     
     }
     
