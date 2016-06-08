@@ -4,8 +4,6 @@
 //
 //  Created by Todd Cardoso on 2016-05-27.
 //  Copyright (c) 2016 TJC. All rights reserved.
-//
-
 
 import SpriteKit
 import UIKit
@@ -113,6 +111,14 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func explosion(pos: CGPoint) {
         let explosionNode               = SKEmitterNode(fileNamed: "explosionParticle.sks")
         explosionNode!.particlePosition = pos
+        self.addChild(explosionNode!)
+        self.runAction(SKAction.waitForDuration(0.2), completion: { explosionNode!.removeFromParent() })
+    }
+    
+    func bossExplosion(pos: CGPoint) {
+        let explosionNode               = SKEmitterNode(fileNamed: "explosionParticle.sks")
+        explosionNode!.particlePosition = pos
+        explosionNode!.setScale(4)
         self.addChild(explosionNode!)
         self.runAction(SKAction.waitForDuration(0.2), completion: { explosionNode!.removeFromParent() })
     }
@@ -244,10 +250,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         
         PlayScene.delay(32) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightThree), userInfo: nil, repeats: false)
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.leftSlowEnemyFlightTwo), userInfo: nil, repeats: false)
         }
         PlayScene.delay(32) {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightThree), userInfo: nil, repeats: false)
+            _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PlayScene.rightSlowEnemyFlightTwo), userInfo: nil, repeats: false)
         }
         
         PlayScene.delay(39) {
@@ -286,6 +292,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             if ((bossBool == true) && (bossHP > 0)) {
                 bossHP = max(0, bossHP - 2)
                 displayBossHealthPoints(bossHP)
+                runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
+
             }
             else if ((bossBool == true) && (bossHP <= 0)) {
                 if let firstNode = firstBody.node as? SKSpriteNode,
@@ -982,7 +990,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             let path = UIBezierPath()
             
-            path.moveToPoint(CGPoint(x: 400, y: 2000))
+            path.moveToPoint(CGPoint(x: -100, y: 2000))
             path.addLineToPoint(CGPoint(x: 400, y: -50))
             path.addLineToPoint(CGPoint(x: 400, y: -3000))
             return path
@@ -1004,7 +1012,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
             let path = UIBezierPath()
             
-            path.moveToPoint(CGPoint(x: 800, y: 2000))
+            path.moveToPoint(CGPoint(x: 1300, y: 1950))
             path.addLineToPoint(CGPoint(x: 800, y: -50))
             path.addLineToPoint(CGPoint(x: 800, y: -3000))
             return path
