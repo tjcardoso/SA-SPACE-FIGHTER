@@ -284,7 +284,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             ((firstBody.categoryBitMask == PhysicsCatagory.Bullet) && (secondBody.categoryBitMask == PhysicsCatagory.Enemy))){
 
             if ((bossBool == true) && (bossHP > 0)) {
-                bossHP = max(0, bossHP - 2)
+                bossHP = max(0, bossHP - 3)
                 displayBossHealthPoints(bossHP)
                 runAction(SKAction.playSoundFileNamed("explosion1.caf", waitForCompletion: false))
 
