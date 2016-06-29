@@ -8,3 +8,7 @@ I used the Archetapp “Space Shooter” tutorial to help myself learn the basic
 
 
 It has not been pushed to the app store and is currently in development.
+
+*Update*
+
+Game Demo Video added.
