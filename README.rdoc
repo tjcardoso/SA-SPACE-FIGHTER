@@ -2,7 +2,7 @@ SA Space Fighter AD2981
 
 Created May 27, 2016.
 
-This is a vertically scrolling 2D space shooter built in Swift for iOS. It has not been pushed to the app store and is currently in development.
+This is a vertically scrolling 2D space shooter built in Swift for iOS. It has not been pushed to the app store.
 
 *Update* :
 
